@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="异步回调函数与Promise 实际开发中经常会遇到这样的需求：从A请求获取到的数据，得到的结果传给B请求，按照ajax的回调函数写法应该是这样的：">
+<meta name="keywords" content="同步&#x2F;异步回调函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise与async&#x2F;await">
+<meta property="og:url" content="http://yoursite.com/2017/11/27/Promise与async await/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="异步回调函数与Promise 实际开发中经常会遇到这样的需求：从A请求获取到的数据，得到的结果传给B请求，按照ajax的回调函数写法应该是这样的：">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/promiseCover.jpg">
+<meta property="og:image" content="http://yoursite.com/images/promise1.png">
+<meta property="og:image" content="http://yoursite.com/images/async1.png">
+<meta property="og:updated_time" content="2017-11-27T14:26:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Promise与async&#x2F;await">
+<meta name="twitter:description" content="异步回调函数与Promise 实际开发中经常会遇到这样的需求：从A请求获取到的数据，得到的结果传给B请求，按照ajax的回调函数写法应该是这样的：">
+<meta name="twitter:image" content="http://yoursite.com/images/promiseCover.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/27/Promise与async await/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Promise与async/await | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-tags" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/27/Promise与async await/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Promise与async/await
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-11-27 22:26:54" itemprop="dateCreated datePublished" datetime="2017-11-27T22:26:54+08:00">2017-11-27</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="异步回调函数与Promise"><a href="#异步回调函数与Promise" class="headerlink" title="异步回调函数与Promise"></a>异步回调函数与Promise</h2><p><img src="/images/promiseCover.jpg" alt="异步编程" align="center" width="640px" height="280px"></p>
+<p>实际开发中经常会遇到这样的需求：从A请求获取到的数据，得到的结果传给B请求，按照ajax的回调函数写法应该是这样的：</p>
+<a id="more"></a>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">   $.ajax(&#123; </span><br><span class="line">	url: <span class="string">''</span>, </span><br><span class="line">	dataType:<span class="string">'json'</span>, </span><br><span class="line">	success: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123; </span><br><span class="line">		<span class="comment">// 获取data数据 传给下一个请求 </span></span><br><span class="line">		<span class="keyword">var</span> id = data.id; </span><br><span class="line">		$.ajax(&#123; </span><br><span class="line">			url:<span class="string">''</span>, </span><br><span class="line">			data:&#123;<span class="string">"id"</span>:id&#125;, </span><br><span class="line">			success:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// ..... </span></span><br><span class="line">			</span><br><span class="line">			&#125; </span><br><span class="line">		&#125;); </span><br><span class="line">	&#125; </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>以上请求存在的问题:  </p>
+<ul>
+<li>1.请求之间依赖关系，造成ajax请求嵌套形成回调地狱，代码难以维护，可读性极差。  </li>
+<li>2.错误处理的代码与正常的业务代码耦合在一起，造成代码非常难看。  </li>
+</ul>
+</li>
+</ul>
+<p>由于以上原因，ES6中的Promise提供了这样的异步回调函数解决方案，先来看promise的兼容性情况：  </p>
+<p><img src="/images/promise1.png" alt="promise-compatibility" align="center" width="640px" height="280px">         </p>
+<p>关于Promise的创建及使用，在<a href="https://corbusier.github.io/2017/06/22/Promise%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B8%8E%E6%A8%A1%E5%9D%97%E5%8C%96%E5%B0%9D%E8%AF%95/" target="_blank" rel="noopener">Promise应用场景与模块化尝试</a>已经做了足够的描述，此处不再赘述。  </p>
+<blockquote>
+<p>Promise是解决异步回调的一种方式，每一个then方法都会返回一个新建的Promise对象，无论你的异步操作成功与否，这个对象都会返回一个值。Promise链写的代码，比层层调用回调函数更优雅，流程也更明确。先获得数据库对象，再获得集合对象，最后查询数据。  </p>
+</blockquote>
+<h2 id="Promise存在的问题"><a href="#Promise存在的问题" class="headerlink" title="Promise存在的问题"></a>Promise存在的问题</h2><p>每一个then()方法获取的对象，都是由上一个返回的数据，并且不可以跨层访问。在Node.js端mongodb js驱动默认返回Promise，以此使用Promise链为例：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">MogoClient.connect(url + db_name).then( <span class="function"><span class="params">db</span> =&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> db.collection(<span class="string">"blogs"</span>);</span><br><span class="line">&#125;).then(<span class="function"><span class="params">coll</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> coll.find().toArray();</span><br><span class="line">&#125;).then(<span class="function"><span class="params">blogs</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(blogs.length);</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>第三个then方法只能获取到查询的结果blogs，而不能使用上级的db对象及coll对象。这时，如果需要打印出blogs列表后，关闭数据库db.closer()。而如果要达到这个目的，可以使用两个解决方案：</p>
+<p>一，使用then()嵌套。将Promise链打断，使其嵌套，与回调函数的嵌套相同：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MongoClient.connect(url + db_name).then(<span class="function"><span class="params">db</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> coll = db.collection(<span class="string">'blogs'</span>);</span><br><span class="line">    coll.find().toArray().then(<span class="function"><span class="params">blogs</span>=&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(blogs.length);</span><br><span class="line">        db.close();</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">err</span>=&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>显然这并不是一种很好的解决办法，从ajax的回调地狱进入到了Promise回调地狱的泥沼，并且需要对每一个Promise捕捉异常，Promise并没有形成链。</p>
+</blockquote>
+<p>二，在每个then()方法都将db传入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">MongoClient.connect(url + db_name).then(<span class="function"><span class="params">db</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        db:db,</span><br><span class="line">        coll:db.collection(<span class="string">'blogs'</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;).then(<span class="function"><span class="params">result</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        db:result.db,</span><br><span class="line">        blogs:result.coll.find().toArray()</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;).then(<span class="function"><span class="params">result</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> result.blogs.then(<span class="function"><span class="params">blogs</span>=&gt;</span> &#123;                     </span><br><span class="line">        <span class="comment">//注意这里，result.coll.find().toArray()  返回的是一个Promise，因此这里需要再解析一层  </span></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            db:result.db,</span><br><span class="line">            blogs:blogs</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">result</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(result.blogs.length);</span><br><span class="line">    result.db.close();</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">err</span>=&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在以上的例子中可以看出，如果返回值是一个Promise值，那每一个Promise都需要在进行解析。<code>{db:result.db,blogs:result.coll.find().toArray()}</code>对象中，blogs是一个Promise值，因此需要先用then方法解析一层，再将同步值db和blogs返回。这里涉及到了Promise的嵌套，不过一个Promise只嵌套了一层then()。</p>
+<p>从以上两种解决方法来看，如果一定要使用Promise链，都不是最优的方法。</p>
+<h2 id="async-await解决方案"><a href="#async-await解决方案" class="headerlink" title="async/await解决方案"></a>async/await解决方案</h2><p>如果使用async/await改写以上的代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> db    = <span class="keyword">await</span> MongoClient.connect(url + db_name);</span><br><span class="line">    <span class="keyword">let</span> coll  = db.collection(<span class="string">"blogs"</span>);</span><br><span class="line">    <span class="keyword">let</span> blogs = <span class="keyword">await</span> coll.find().toArray();</span><br><span class="line">    <span class="built_in">console</span>.log(blogs.length);</span><br><span class="line">    db.close();</span><br><span class="line">&#125;)().catch(<span class="function"><span class="params">err</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>代码中的async表明函数是异步的，同时await表示要等待异步操作返回值，而async其实就是Promise的一个语法糖，通过async/await函数，异步请求可以变得更直观优雅，接下来继续深入了解ES中的新特性。</p>
+<h2 id="深入async-await"><a href="#深入async-await" class="headerlink" title="深入async/await"></a>深入async/await</h2><p>关于async/await函数的兼容性，目前来说，浏览器兼容程度较之Promise来说还不是很高：</p>
+<p><img src="/images/async1.png" alt="async-compatibility" align="center" width="640px" height="280px"> </p>
+<p>根据文档定义，async返回的就是一个Promise对象，所以在最外层不能使用await获取到其返回值时，可以使用then()解析这个Promise对象。如果async函数没有返回值，它返回的就是<code>Promise.resolve(undefined)</code>。联想到Promise的一个特点—立即执行，所以并不会阻塞之后的语句，这与普通返回的Promise对象并没有不同。</p>
+<p>所以，还是在于await关键字上。那么，await等待的到底是什么呢？</p>
+<p><strong>await不仅等待Promise对象，可以等任何表达式的结果。</strong> 所以，await后可以是普通函数调用或直接量。如下例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">second</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"someThing"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">testAsync</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">		resolve(<span class="string">"hello Async"</span>);</span><br><span class="line">	&#125;).then(<span class="function">(<span class="params">v</span>)=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> v;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">const</span> v1 = <span class="keyword">await</span> sleep();</span><br><span class="line">	<span class="keyword">const</span> v2 = <span class="keyword">await</span> testAsync();</span><br><span class="line">	<span class="built_in">console</span>.log(v1,v2);</span><br><span class="line">&#125;</span><br><span class="line">test();</span><br></pre></td></tr></table></figure>
+<p>await等到了想要的东西，一个Promise对象或其他值，如果等到的是Promise对象，await就会阻塞后面的代码，等待Promise被解析完成得到resolve值，作为await表达式的运算结果。 </p>
+<p>关于阻塞，这就是await必须放在async函数中的原因。async函数调用不会造成阻塞，因为内部所有的阻塞都被封装在了Promise对象中异步执行。</p>
+<h3 id="async-await的优势"><a href="#async-await的优势" class="headerlink" title="async/await的优势"></a>async/await的优势</h3><p>单一的Promise链并没有看出来async/await的优势，但是如果需要处理多个Promise形成的then链时，async/await函数的优点就能凸显无疑。</p>
+<p>例如，有三个请求按时间顺序分别为A、B、C。B依赖于A的结果返回解构，C依赖于B的请求结果结构。如果使用回调函数会有3层回调，Promise则会有三个then，同样会是嵌套的Promise。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">second, param</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            resolve(param);</span><br><span class="line">        &#125;, second);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doIt</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> res1,res2,res3;</span><br><span class="line">	res1 = sleep(<span class="number">1000</span>,<span class="string">"req01"</span>);</span><br><span class="line">	res2 = res1.then(<span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(v);</span><br><span class="line">		sleep(<span class="number">5000</span>,<span class="string">"req02"</span>+v).then(<span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">			<span class="built_in">console</span>.log(v);</span><br><span class="line">			res3 = sleep(<span class="number">500</span>,<span class="string">"req03"</span>+v).then(<span class="function">(<span class="params">v</span>) =&gt;</span> &#123;</span><br><span class="line">				<span class="built_in">console</span>.log(v)</span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br><span class="line">doIt();</span><br></pre></td></tr></table></figure>
+<p>而如果使用async/await改造该方法，从可读性和易维护上就提升了许多。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">//...sleep()</span></span><br><span class="line">   <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">doIt</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> res01 = <span class="keyword">await</span> sleep(<span class="number">1000</span>,<span class="string">"req01"</span>);</span><br><span class="line">	<span class="keyword">let</span> res02 = <span class="keyword">await</span> sleep(<span class="number">5000</span>,<span class="string">"req02"</span>+res01);</span><br><span class="line">	<span class="keyword">let</span> res03 = <span class="keyword">await</span> sleep(<span class="number">500</span>,<span class="string">"req03"</span>+res02);</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">`</span></span><br><span class="line"><span class="string">		<span class="subst">$&#123;res03&#125;</span></span></span><br><span class="line"><span class="string">		<span class="subst">$&#123;res02&#125;</span></span></span><br><span class="line"><span class="string">		<span class="subst">$&#123;res01&#125;</span></span></span><br><span class="line"><span class="string">	`</span>)</span><br><span class="line">&#125;</span><br><span class="line">doIt();</span><br></pre></td></tr></table></figure>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>因为async/await不再需要使用then()解析，因此也就不存在使用链式的catch捕捉错误，直接用try/catch包裹就能捕捉错误。  </p>
+<p>例如：  </p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">second</span>) </span>{
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> {
+        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> {
+            reject(<span class="string">'want to sleep~'</span>);
+        }, second);
+    })
+}
+
+<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">errorDemo</span>(<span class="params"></span>) </span>{
+    <span class="keyword">let</span> result = <span class="keyword">await</span> sleep(<span class="number">1000</span>);
+    <span class="built_in">console</span>.log(result);
+}
+errorDemo();<span class="comment">// VM706:11 Uncaught (in promise) want to sleep~</span>
+
+<span class="comment">// 为了处理Promise.reject 的情况,应该将代码块用 try catch 包裹一下</span>
+<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">errorDemoSuper</span>(<span class="params"></span>) </span>{
+    <span class="keyword">try</span> {
+        <span class="keyword">let</span> result = <span class="keyword">await</span> sleep(<span class="number">1000</span>);
+        <span class="built_in">console</span>.log(result);
+    } <span class="keyword">catch</span> (err) {
+        <span class="built_in">console</span>.log(err);
+    }
+}
+
+</code></pre>
+<h2 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h2><p>对于没有相互关联性的并发请求，并不需要将其放入await中阻塞请求进程。例如A、B、C三个异步请求结束之后清除加载动画，并不需要将以上三个需求放置在await中，而应该是这样：</p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">sleep</span>(<span class="params">second</span>) </span>{
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> {
+        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> {
+            resolve(<span class="string">'request done! '</span> + <span class="built_in">Math</span>.random());
+        }, second);
+    })
+}
+
+<span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">Demo</span>(<span class="params"></span>)</span>{
+    <span class="keyword">let</span> p1 = sleep(<span class="number">1000</span>);
+    <span class="keyword">let</span> p2 = sleep(<span class="number">1000</span>);
+    <span class="keyword">let</span> p3 = sleep(<span class="number">2000</span>);
+    <span class="keyword">await</span> <span class="built_in">Promise</span>.all([p1,p2,p3]);
+    <span class="built_in">console</span>.log(<span class="string">"clear the loading"</span>);
+}
+Demo();
+</code></pre>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/同步-异步回调函数/" rel="tag"># 同步/异步回调函数</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/25/Flexbox/" rel="next" title="Flexbox">
+                <i class="fa fa-chevron-left"></i> Flexbox
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/13/ES6基础/" rel="prev" title="ES6基础">
+                ES6基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#异步回调函数与Promise"><span class="nav-number">1.</span> <span class="nav-text">异步回调函数与Promise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise存在的问题"><span class="nav-number">2.</span> <span class="nav-text">Promise存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#async-await解决方案"><span class="nav-number">3.</span> <span class="nav-text">async/await解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入async-await"><span class="nav-number">4.</span> <span class="nav-text">深入async/await</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#async-await的优势"><span class="nav-number">4.1.</span> <span class="nav-text">async/await的优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理"><span class="nav-number">5.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并行"><span class="nav-number">6.</span> <span class="nav-text">并行</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

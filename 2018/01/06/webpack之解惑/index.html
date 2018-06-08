@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="webpack运行原理webpack维护了一套模块化系统，它兼容所有的模块规范。结合loader和plugin输出最终的编译文件。">
+<meta name="keywords" content="node.js、webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack之解惑">
+<meta property="og:url" content="http://yoursite.com/2018/01/06/webpack之解惑/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="webpack运行原理webpack维护了一套模块化系统，它兼容所有的模块规范。结合loader和plugin输出最终的编译文件。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/webpack-disabuse.jpg">
+<meta property="og:updated_time" content="2018-01-05T16:08:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack之解惑">
+<meta name="twitter:description" content="webpack运行原理webpack维护了一套模块化系统，它兼容所有的模块规范。结合loader和plugin输出最终的编译文件。">
+<meta name="twitter:image" content="http://yoursite.com/images/webpack-disabuse.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/06/webpack之解惑/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>webpack之解惑 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-tags" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/webpack之解惑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack之解惑
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-01-06 00:08:36" itemprop="dateCreated datePublished" datetime="2018-01-06T00:08:36+08:00">2018-01-06</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/webpack/" itemprop="url" rel="index"><span itemprop="name">webpack</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/webpack-disabuse.jpg" alt="webpack之解惑" align="center" width="640px" height="280px"></p>
+<h3 id="webpack运行原理"><a href="#webpack运行原理" class="headerlink" title="webpack运行原理"></a>webpack运行原理</h3><p>webpack维护了一套模块化系统，它兼容所有的模块规范。结合<code>loader</code>和<code>plugin</code>输出最终的编译文件。</p>
+<a id="more"></a>
+<p>一个简单的<code>webpack.config.js</code>配置文件：  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</span><br><span class="line"><span class="keyword">var</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>)</span><br><span class="line"><span class="keyword">var</span> CleanWebpakPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: &#123;</span><br><span class="line">        main: path.resolve(__dirname, <span class="string">'index.js'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    output: &#123;</span><br><span class="line">        path: path.resolve(__dirname, <span class="string">'/dist'</span>),</span><br><span class="line">        filename: <span class="string">'js/[name].[chunckhash:4].js'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">                loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">                exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">            filename: <span class="string">'index.html'</span>,</span><br><span class="line">            template: <span class="string">'index.tmpl.html'</span></span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="comment">//公共部分拆分，利于分析代码</span></span><br><span class="line">        <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">            name: <span class="string">'manifest'</span></span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="keyword">new</span> CleanWebpackPlugin([<span class="string">'dist'</span>])</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以此示例，index.js为入口文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//test.js</span></span><br><span class="line"><span class="keyword">const</span> str = <span class="string">'test is loaded'</span></span><br><span class="line"><span class="built_in">module</span>.exports = str</span><br><span class="line"></span><br><span class="line"><span class="comment">//index.js</span></span><br><span class="line"><span class="keyword">const</span> test = <span class="built_in">require</span>(<span class="string">'./src/js/test'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(test)</span><br></pre></td></tr></table></figure>
+<p>打包完成后的目录结构：</p>
+<pre>
+├── dist 
+   ├── js
+       ├── index-b1a8.js
+       ├── manifest-eef6.js
+   ├── index.html
+├── node_modules
+├── src
+   ├── js
+       ├── test.js
+├── index.html          
+├── package.json             
+├── webpack.config.js
+.
+</pre>
+
+
+<p>打包完成后的两个js文件的加载顺序是<code>manifest-eef6.js</code>到<code>index-b1a8.js</code>。先看<code>index.js</code>中的内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//index-b1a8.js</span></span><br><span class="line">webpackJsonp([<span class="number">0</span>],&#123;</span><br><span class="line">    <span class="string">"JkW7"</span>:</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">module, exports, __webpack_require__</span>) </span>&#123;</span><br><span class="line"><span class="meta">        "use strict"</span>;</span><br><span class="line">        <span class="keyword">var</span> test = __webpack_require__(<span class="string">"zFrx"</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(test);</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="string">"zFrx"</span>:</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">module, exports, __webpack_require__</span>) </span>&#123;</span><br><span class="line"><span class="meta">        "use strict"</span>;</span><br><span class="line">        <span class="keyword">var</span> str = <span class="string">'test is loaded'</span>;</span><br><span class="line">        <span class="built_in">module</span>.exports = str;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;,[<span class="string">"JkW7"</span>]);</span><br></pre></td></tr></table></figure>
+<p>很显然，webpackJsonp是一个全局函数，并且使用了三个参数：</p>
+<ol>
+<li style="list-style: none"><input type="checkbox"> 数组</li>
+<li>包含两个方法的对象，</li>
+<li>以及[“JkW7”]数组。</li>
+</ol>
+<p>在以上的第2个参数中，两个方法都包含了相同的参数<code>module</code>、<code>exports</code>,<code>__webpack_require</code>，在打包的原文件中，使用了<code>require</code>及<code>module.exports</code>，而前者此时以<code>__webpack_require__</code>的形式出现。猜测它应该是模块化函数的关键。</p>
+<p>在<code>manifest-eef6.js</code>中的代码有151行，经过精简还有28行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">modules</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">window</span>[<span class="string">"webpackJsonp"</span>] = <span class="function"><span class="keyword">function</span> <span class="title">webpackJsonpCallback</span>(<span class="params">chunkIds, moreModules, executeModules</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> moduleId, result;</span><br><span class="line">        <span class="comment">// (1)</span></span><br><span class="line">        <span class="keyword">for</span> (moduleId <span class="keyword">in</span> moreModules) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.hasOwnProperty.call(moreModules, moduleId)) &#123;</span><br><span class="line">                modules[moduleId] = moreModules[moduleId];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// (2)</span></span><br><span class="line">        <span class="keyword">if</span> (executeModules) &#123;</span><br><span class="line">            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; executeModules.length; i++) &#123;</span><br><span class="line">                result = __webpack_require__(executeModules[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">var</span> installedModules = &#123;&#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// (3)</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__webpack_require__</span>(<span class="params">moduleId</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (installedModules[moduleId]) &#123;</span><br><span class="line">                <span class="keyword">return</span> installedModules[moduleId].exports;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">var</span> <span class="built_in">module</span> = installedModules[moduleId] = &#123;</span><br><span class="line">                exports: &#123;&#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            modules[moduleId].call(<span class="built_in">module</span>.exports, <span class="built_in">module</span>, <span class="built_in">module</span>.exports, __webpack_require__);</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">module</span>.exports;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;)([]);</span><br></pre></td></tr></table></figure>
+<p>整体的结构是一个IIFE，以空数组作为参数，形参为<code>modules</code>，而在挂载在window的全局函数<code>webpackJsonp</code>中，接受三个参数，分别为<code>chunkIds</code>，<code>moreModules</code>，<code>executeModules</code>，分别对应在<code>index-b1a8.js</code>中的三个参数。</p>
+<p>(1)modules通过遍历获取到<code>moreModules</code>内的所有方法，保存在了这个空数组中。</p>
+<p>(2)是一个条件判断：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (executeModules) &#123;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; executeModules.length; i++) &#123;</span><br><span class="line">        result = __webpack_require__(executeModules[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>判断第三个参数是否存在，而按照加载顺序，此时调用window下的全局方法<code>webpackJsonp</code>，因此执行<code>__webpack_require__</code>方法</p>
+<p>(3)<strong>webpack_require</strong>函数<br>与(1)类似，在它的内部首先是一个赋值的逻辑。如果<code>installedModules</code>中存在对应的<code>moduled</code>，那么直接返回它的<code>exports</code>。而如果没有则需要赋值再返回。赋值的过程为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">modules[moduleId].call(<span class="built_in">module</span>.exports, <span class="built_in">module</span>, <span class="built_in">module</span>.exports, __webpack_require__);</span><br></pre></td></tr></table></figure>
+<p>在(1)中的赋值过程中<code>modules[moduleId]</code>已经得到了<code>moreModules</code>的所有方法，此时的<code>this</code>对象为<code>module.exports</code>，再把<code>module</code> ，<code>module.exports</code> ， <code>__webpack_require__</code>传递作为参数调用。而这三个参数正是对应<code>index</code>中出现的三个参数，此后根据module(如test.js中的require部分)所需，递归执行<code>__webpack_require__</code>。在该函数中会判断是否具有缓存，如果具有便不再调用<code>module</code>。webpack打包的文件，就是通过函数隔离<code>module</code>作用域，以达到互不污染的目的。</p>
+<h3 id="babel的作用"><a href="#babel的作用" class="headerlink" title="babel的作用"></a>babel的作用</h3><p>webpack已经能够胜任ES6 Module的模块化的转化，但仍有ES6语法需要转译，babel可以处理ES6到ES5的转换。</p>
+<p>babel能将ES6的模块关键字转换为CommonJS规范。这样就可以直接使用webpack运行时定义的<code>__webpack_require__</code>。在<code>webpack</code>的配置文件中需要配置才可以达到效果。方法有几种，列出其中一种：</p>
+<p>(1).首先安装<code>babel</code>系列：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev babel-loader babel-core babel-preset-latest babel-plugin-transform-runtime</span><br></pre></td></tr></table></figure>
+<p>(2).针对webpack配置文件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//webpack.config.js</span></span><br><span class="line"><span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">        &#123;</span><br><span class="line">            test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">            loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">            exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>(3).创建.babelrc文件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//.babelrc  注意该文件形式必须符合JSON格式定义，不能出现注释!!</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: &#123;</span><br><span class="line">        <span class="string">"babel-preset-env"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"plugins"</span>: &#123;</span><br><span class="line">        <span class="string">"transform-runtime"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ES6的语法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//moduleA.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> hello = <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">"hello"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> TYPE = <span class="string">'animal'</span></span><br><span class="line"><span class="keyword">const</span> A = <span class="string">"Milan"</span></span><br><span class="line"><span class="keyword">const</span> C = <span class="string">"San Siro"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">9</span></span><br><span class="line"><span class="keyword">export</span> &#123;A,C&#125;</span><br></pre></td></tr></table></figure></p>
+<p>转换为CommonJS语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//moduleA.js</span></span><br><span class="line"><span class="keyword">var</span> hello = exports.hello = <span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">"hello"</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> TYPE = exports.TYPE = <span class="string">'animal'</span>;</span><br><span class="line"><span class="keyword">var</span> A = <span class="string">"Milan"</span>;</span><br><span class="line"><span class="keyword">var</span> C = <span class="string">"San Siro"</span>;</span><br><span class="line">exports.default = <span class="number">9</span>;</span><br><span class="line">exports.A = A;</span><br><span class="line">exports.C = C;</span><br></pre></td></tr></table></figure>
+<p>babel输出都赋值给了<code>exports</code>，而引入时也转换为<code>CommonJS</code>规范，使用<code>require</code>引用模块。所以ES6 Module完全可以和CommonJS规范的模块互用，因为最终都转换为了CommonJS规范的语法。</p>
+<h3 id="webpack编译的js如何引用"><a href="#webpack编译的js如何引用" class="headerlink" title="webpack编译的js如何引用"></a>webpack编译的js如何引用</h3><p>通过以上配置输出的文件是无法被其他文件引用的。webpack提供了<code>output.libraryTarget</code>配置来定义输出文件的用途，可选项有如下：</p>
+<ol>
+<li>默认项var</li>
+<li>commonjs</li>
+<li>commonjs2</li>
+<li>AMD<br>…</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//webpack.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    output: &#123;</span><br><span class="line">        path: __dirname + <span class="string">'dist'</span>,</span><br><span class="line">        filename: <span class="string">'./[name].[chunkhash:5].js'</span>,</span><br><span class="line">        library: <span class="string">'test'</span> <span class="comment">//1.默认var。不需要设置libraryTarget值</span></span><br><span class="line">        </span><br><span class="line">        library: <span class="string">'commonjs'</span>,<span class="comment">//2.commonjs</span></span><br><span class="line">        libraryTarget: <span class="string">'FOO'</span><span class="comment">//输出形如 exports['FOO'] = (function(modules)&#123;&#125;)();</span></span><br><span class="line">        </span><br><span class="line">        library: <span class="string">'commonjs2'</span><span class="comment">//3.commonjs2 输出形如 module.exports = &#123;&#125;</span></span><br><span class="line"></span><br><span class="line">        library:AMD <span class="comment">//输出AMD格式</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="tree-shaking"><a href="#tree-shaking" class="headerlink" title="tree-shaking"></a>tree-shaking</h3><p>webpack2开始采用了<code>tree-shaking</code>，即通过静态分析ES6语法，删除无用的模块。但是只对ES Module有效，所以一旦babel将ES module转换成CommonJS语法，就无法使用这一优化。在配置文件中，关闭babel的模块转换功能即可实现。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//webpack.config.js</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="built_in">module</span>:&#123;</span><br><span class="line">    rules: [</span><br><span class="line">        &#123;</span><br><span class="line">            test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">            exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">            use: &#123;</span><br><span class="line">                loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">                options: &#123;</span><br><span class="line">                    <span class="string">'presets'</span>: [</span><br><span class="line">                        [<span class="string">'babel-preset-env'</span>,&#123;<span class="attr">modules</span>: <span class="literal">false</span>&#125;]</span><br><span class="line">                    ]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改最初的例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//moduleA.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> hello = <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">"hello"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> TYPE = <span class="string">'animal'</span></span><br><span class="line"><span class="keyword">const</span> A = <span class="string">"Milan"</span></span><br><span class="line"><span class="keyword">const</span> C = <span class="string">"San Siro"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">9</span></span><br><span class="line"><span class="keyword">export</span> &#123;A,C&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//moduleB.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;hello&#125; <span class="keyword">from</span> <span class="string">'./moduleA'</span></span><br><span class="line"><span class="keyword">import</span> a <span class="keyword">from</span> <span class="string">'./moduleA'</span></span><br><span class="line"><span class="keyword">import</span> &#123;A&#125; <span class="keyword">from</span> <span class="string">'./moduleA'</span></span><br><span class="line"><span class="built_in">console</span>.log(hello())</span><br><span class="line"><span class="built_in">console</span>.log(A)</span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br></pre></td></tr></table></figure></p>
+<p>在<code>moduleA.js</code>中输出了<code>{C}变量</code>，但是<code>moduleB.js</code>中并没有引用，所以优化以后<code>moduleA.js</code>将不再输出<code>{C}变量</code>。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/node-js、webpack/" rel="tag"># node.js、webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/13/ES6基础/" rel="next" title="ES6基础">
+                <i class="fa fa-chevron-left"></i> ES6基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/06/ES6 Module/" rel="prev" title="ES6 Module">
+                ES6 Module <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack运行原理"><span class="nav-number">1.</span> <span class="nav-text">webpack运行原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#babel的作用"><span class="nav-number">2.</span> <span class="nav-text">babel的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack编译的js如何引用"><span class="nav-number">3.</span> <span class="nav-text">webpack编译的js如何引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tree-shaking"><span class="nav-number">4.</span> <span class="nav-text">tree-shaking</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

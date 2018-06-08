@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="约定$命令行在git bash中执行，其余的在cmd中执行。  前期的准备 git客户端 github账号 node.js 创建仓库">
+<meta name="keywords" content="node.js、git、hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github上搭建hexo博客">
+<meta property="og:url" content="http://yoursite.com/2017/06/19/Github上搭建hexo博客/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="约定$命令行在git bash中执行，其余的在cmd中执行。  前期的准备 git客户端 github账号 node.js 创建仓库">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/hexo_github.png">
+<meta property="og:updated_time" content="2017-06-19T02:10:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Github上搭建hexo博客">
+<meta name="twitter:description" content="约定$命令行在git bash中执行，其余的在cmd中执行。  前期的准备 git客户端 github账号 node.js 创建仓库">
+<meta name="twitter:image" content="http://yoursite.com/images/hexo_github.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/19/Github上搭建hexo博客/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Github上搭建hexo博客 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/19/Github上搭建hexo博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Github上搭建hexo博客
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-06-19 10:10:24" itemprop="dateCreated datePublished" datetime="2017-06-19T10:10:24+08:00">2017-06-19</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/hexo博客/" itemprop="url" rel="index"><span itemprop="name">hexo博客</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="ds-recent-visitors" data-num-items="39" data-avatar-size="40" id="ds-recent-visitors"></div>
+
+<p><img src="/images/hexo_github.png" alt="github+hexo" align="center"></p>
+<blockquote>
+<p>约定$命令行在git bash中执行，其余的在cmd中执行。</p>
+</blockquote>
+<h2 id="前期的准备"><a href="#前期的准备" class="headerlink" title="前期的准备"></a>前期的准备</h2><ul>
+<li>git客户端</li>
+<li>github账号</li>
+<li>node.js</li>
+<li>创建仓库</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>在开始一定要注意node的环境变量和系统变量的配置问题，有了webpack配置的前车之鉴，当出现 <code>&lt;command&gt; 不是内部或外部命令也不是可运行的程序</code>时，首先想到的是环境变量的问题。如果没有设置，则不可以使用<code>npm</code>本地安装<code>node_modules</code></p>
+</blockquote>
+<p>建立仓库时注意，仓库的名字必须是<strong>用户名.github.io</strong>(注意是必须！)，接着配置SSH。</p>
+<h3 id="配置SSH"><a href="#配置SSH" class="headerlink" title="配置SSH"></a>配置SSH</h3><ol>
+<li>打开Git Bash终端：在桌面右键，会出现”Git Bash here”的选项，点击即可。</li>
+<li>设置user name和email：</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"你的GitHub用户名"</span></span><br><span class="line">$ git config --global user.email <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure>
+<p>生成ssh密钥：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"你的GitHub注册邮箱"</span></span><br></pre></td></tr></table></figure></p>
+<p>生成的包括<strong>id_rsa</strong>和<strong>id_rsa.pub</strong>。<strong>id_rsa文件是私钥</strong></p>
+<h4 id="添加公钥到github："><a href="#添加公钥到github：" class="headerlink" title="添加公钥到github："></a>添加公钥到github：</h4><p>头像 —&gt; setting —&gt; SSH and GPG keys选项 —&gt; New SSH key(新建SSH)，将id_rsa.pub中的内容复制到key文本框，再点击<code>Add SSH key(添加SSH)</code></p>
+<h4 id="测试SSH"><a href="#测试SSH" class="headerlink" title="测试SSH"></a>测试SSH</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>接下来会出来下面的确认信息：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    The authenticity <span class="keyword">of</span> host <span class="string">'github.com (207.97.227.239)'</span> can<span class="string">'t be established. </span></span><br><span class="line"><span class="string">RSA key fingerprint is ....</span></span><br><span class="line"><span class="string"> Are you sure you want to continue connecting (yes/no)?yes</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string"> Hi Corbusier! You'</span>ve successfully authenticated, </span><br><span class="line">but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure></p>
+<h2 id="博客本地仓库的创建"><a href="#博客本地仓库的创建" class="headerlink" title="博客本地仓库的创建"></a>博客本地仓库的创建</h2><p>在本地创建Hexo(任意名字)，前提是环境变量已配置完成。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir Hexo</span><br><span class="line"><span class="comment">/*&lt;--!进入Hexo文件夹 -- !&gt;*/</span></span><br><span class="line">$ cd blog</span><br></pre></td></tr></table></figure></p>
+<h2 id="本地安装hexo"><a href="#本地安装hexo" class="headerlink" title="本地安装hexo"></a>本地安装hexo</h2><ol>
+<li>hexo全局安装</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>初始化hexo</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>安装依赖</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>启动hexo</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>启动之后，打开浏览器，在地址栏输入：<a href="http://localhost:4000，你会看到Hexo的示例页面。" target="_blank" rel="noopener">http://localhost:4000，你会看到Hexo的示例页面。</a></p>
+<h2 id="测试hexo"><a href="#测试hexo" class="headerlink" title="测试hexo"></a>测试hexo</h2><ol>
+<li>新建文章</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> &lt;title&gt;</span><br></pre></td></tr></table></figure>
+<p>此时在source_posts文件夹中便会多出一个文档”title.md”.<br>如果要删除，直接在此文件夹下删除对应的文件即可。</p>
+<ol start="2">
+<li>生成静态页面</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>清除生成内容</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br></pre></td></tr></table></figure>
+<p>执行此操作会删除public文件夹中的内容。</p>
+<ol start="4">
+<li>部署hexo</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>该操作会将hexo生成的静态内容部署到配置的仓库中</p>
+<h2 id="部署hexo"><a href="#部署hexo" class="headerlink" title="部署hexo"></a>部署hexo</h2><ol>
+<li>编辑配置文件，关联远程仓库：<br>在编辑器中打开Hexo配置文件_config.yml，找到下面内容并修改：</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">    deploy:</span><br><span class="line">      type: git</span><br><span class="line">      repo: git@github.com:Corbusier/Corbusier.github.io.git #github仓库地址</span><br><span class="line">      branch: master # github分支</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：type、repo、branch的前面有两个空格，后面的:后面有一个空格</p>
+</blockquote>
+<p>安装git插件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>如果没有安装git插件，会有错误提示，安装后重新部署就可以了。</p>
+</blockquote>
+<p>部署：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></p>
+<p>现在，可以使用<code>http://&lt;用户名&gt;.github.io</code>查看你的博客了。</p>
+<h2 id="hexo常用参数设置"><a href="#hexo常用参数设置" class="headerlink" title="hexo常用参数设置"></a>hexo常用参数设置</h2><h3 id="配置文件说明"><a href="#配置文件说明" class="headerlink" title="配置文件说明"></a>配置文件说明</h3><p>网站配置文件是在根目录下的_config.yml(站点配置文件)文件，是yaml格式的。<br>所有的配置项后面的冒号（:）与值之间要有一个空格。</p>
+<blockquote>
+<p>这个配置文件很长，但是需要修改的只有几项</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"># Hexo Configuration</span><br><span class="line">## Docs: https://hexo.io/docs/configuration.html</span><br><span class="line">## Source: https://github.com/hexojs/hexo/</span><br><span class="line"></span><br><span class="line"># Site</span><br><span class="line">title: Awesome_929</span><br><span class="line">subtitle:</span><br><span class="line">description:</span><br><span class="line">author: Zoe</span><br><span class="line">language:</span><br><span class="line">timezone:</span><br><span class="line"></span><br><span class="line"># URL</span><br><span class="line">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span><br><span class="line">url: corbusier.github.io</span><br><span class="line">root: <span class="regexp">/</span></span><br><span class="line"><span class="regexp">permalink: :year/</span>:month/:day/:title/</span><br><span class="line">permalink_defaults:</span><br><span class="line"></span><br><span class="line"># Directory</span><br><span class="line">source_dir: source</span><br><span class="line">public_dir: public</span><br><span class="line">tag_dir: tags</span><br><span class="line">archive_dir: archives</span><br><span class="line">category_dir: categories</span><br><span class="line">code_dir: downloads/code</span><br><span class="line">i18n_dir: :lang</span><br><span class="line">skip_render: [] </span><br><span class="line"></span><br><span class="line"># Writing</span><br><span class="line">new_post_name: :title.md # File name of new posts</span><br><span class="line">default_layout: post</span><br><span class="line">titlecase: false # Transform title into titlecase</span><br><span class="line">external_link: true # Open external links in new tab</span><br><span class="line">filename_case: <span class="number">0</span></span><br><span class="line">render_drafts: <span class="literal">false</span></span><br><span class="line">post_asset_folder: <span class="literal">false</span></span><br><span class="line">relative_link: <span class="literal">false</span></span><br><span class="line">future: <span class="literal">true</span></span><br><span class="line">highlight:</span><br><span class="line">  enable: <span class="literal">true</span></span><br><span class="line">  line_number: <span class="literal">true</span></span><br><span class="line">  auto_detect: <span class="literal">false</span></span><br><span class="line">  tab_replace:</span><br><span class="line"></span><br><span class="line"># Category &amp; Tag</span><br><span class="line">default_category: uncategorized</span><br><span class="line">category_map:</span><br><span class="line">tag_map:</span><br><span class="line"></span><br><span class="line"># Date / Time format</span><br><span class="line">## Hexo uses Moment.js to parse and display date</span><br><span class="line">## You can customize the date format as defined in</span><br><span class="line">## http://momentjs.com/docs/#/displaying/format/</span><br><span class="line">date_format: YYYY-MM-DD</span><br><span class="line">time_format: HH:mm:ss</span><br><span class="line"></span><br><span class="line"># Pagination</span><br><span class="line">## Set per_page to 0 to disable pagination</span><br><span class="line">per_page: <span class="number">10</span></span><br><span class="line">pagination_dir: page</span><br><span class="line"></span><br><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">plugins:</span><br><span class="line">  # hexo-generator-feed #RSS订阅插件</span><br><span class="line">  # hexo-generator-sitemap  #sitemap插件</span><br><span class="line"></span><br><span class="line">## Themes: https://hexo.io/themes/ #主题</span><br><span class="line">theme: landscape</span><br><span class="line"></span><br><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:Corbusier/Corbusier.github.io.git #github仓库地址</span><br><span class="line">  branch: master # github分支</span><br><span class="line">#sitemap</span><br><span class="line">sitemap:</span><br><span class="line">  path: sitemap.xml</span><br><span class="line">#feed</span><br><span class="line">atom:</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  limit: <span class="number">20</span></span><br><span class="line"></span><br><span class="line"># links:</span><br><span class="line">#   Feed: /atom.xml</span><br><span class="line">#   SiteMap: /sitemap.xml</span><br></pre></td></tr></table></figure>
+<h3 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h3><p>如果是扩展插件，要在_config.yml配置文件中添加插件信息，是plugins配置项。<br>比如下面的两个插件：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">plugins:</span><br><span class="line">  hexo-generator-feed #RSS订阅插件</span><br><span class="line">  hexo-generator-sitemap  #sitemap插件</span><br></pre></td></tr></table></figure>
+<p>安装插件，后面要加上–save，表示依赖项。</p>
+<ul>
+<li>RSS订阅插件<br>hexo-generator-feed：生成rss订阅文件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+<p>添加配置信息</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#sitemap</span><br><span class="line">sitemap:</span><br><span class="line">  path: sitemap.xml</span><br></pre></td></tr></table></figure>
+<ul>
+<li>SiteMap插件<br>hexo-generator-sitemap：生成易于搜索引擎搜素的网站地图</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br></pre></td></tr></table></figure>
+<p>添加配置信息：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#feed</span><br><span class="line">atom:</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  limit: <span class="number">20</span></span><br></pre></td></tr></table></figure>
+<p>可以在主题配置文件中添加相关配置，可以在页面上显示。比如，添加链接信息</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">links:</span><br><span class="line">  Feed: <span class="regexp">/atom.xml</span></span><br><span class="line"><span class="regexp">  SiteMap: /</span>sitemap.xml</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Git插件<br>hexo-deployer-git：使用git同步代码到git仓库中</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p>默认的主题是<strong>landscape</strong><br>官方主题地址：<a href="https://hexo.io/themes/" target="_blank" rel="noopener">thems</a></p>
+<h3 id="切换主题"><a href="#切换主题" class="headerlink" title="切换主题"></a>切换主题</h3><p>我是用的是<code>next</code>，以此为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:<span class="comment">//github.com/iissnan/hexo-theme-next themes/next</span></span><br></pre></td></tr></table></figure>
+<p>在站点配置文件<code>_config.yml</code>文件中修改主题配置，比如修改theme: landscape为theme: next；</p>
+<p>除了之前的主题<code>git clone</code>和修改站点配置文件外，还需要以下的操作：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo generate</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure></p>
+<p>再打开网页，之前丑陋的landscape主题就被替换了。</p>
+<p>更为详细的设置：<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">NexT主题</a></p>
+<h2 id="使用travis部署hexo"><a href="#使用travis部署hexo" class="headerlink" title="使用travis部署hexo"></a>使用travis部署hexo</h2><p>现在博客基本可以运行了，但是如果需要多个电脑之间推送会不太方便。hexo使用的部署命令只是把静态文件上传到仓库中，在其他电脑同步下的只是静态文件而非源码。所以使用自动部署非常有必要。介绍使用<code>Travis CI</code>持续集成并部署。</p>
+<h3 id="配置多个SSH"><a href="#配置多个SSH" class="headerlink" title="配置多个SSH"></a>配置多个SSH</h3><ul>
+<li>生成ssh密钥<br>可以使用全局的ssh密钥，不过建议使用单独的ssh密钥，在这里以单独ssh密钥为例。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ #切换到.ssh文件下</span><br><span class="line">$ cd ~<span class="regexp">/.ssh</span></span><br><span class="line"><span class="regexp">$ #生成密钥，后面换成自己的github邮箱</span></span><br><span class="line"><span class="regexp">$ ssh-keygen -t rsa -C "SeayXu@163.com"</span></span><br></pre></td></tr></table></figure>
+<p>输入上面命令后回车一下，当提示Enter file in which to save the key (/c/Users/Seay/.ssh/id_rsa):时，输入新的ssh密钥文件路径和文件名(不能是.ssh/id_rsa)，这里输入id_rsa_blog，然后一路回车。</p>
+<ul>
+<li>添加ssh到github</li>
+</ul>
+<p>登录到github中，点击进入到博客仓库。点击右上方的Settings进入到设置页面，点击左边的Deploy keys项。<br>在右上点击Add deploy key，然后在下面输入标题，把生成的密钥id_rsa_blog.pub里面的内容复制到key文本框中，选中下面的Allow write access，最后点击Add key。</p>
+<ul>
+<li><p>新建配置文件<br>在.ssh文件夹中创建一个名为config的配置文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ touch config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑配置信息<br>用编辑器打开config文件，添加如下信息：</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># github</span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~<span class="regexp">/.ssh/i</span>d_rsa</span><br><span class="line"># 这里是空行</span><br><span class="line"># github_blog</span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~<span class="regexp">/.ssh/i</span>d_rsa_blog</span><br></pre></td></tr></table></figure>
+<p>提示：<code>这里的密钥文件路径根据自己的做相应修改。</code></p>
+<h3 id="配置Travis"><a href="#配置Travis" class="headerlink" title="配置Travis"></a>配置Travis</h3><ul>
+<li>接入Travis<br>打开<a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis CI</a>，使用github账号登陆。</li>
+</ul>
+<p>将鼠标放在右上角的用户名上，点击Account选项，会显示github的项目。<br>找到博客项目，点击前面带有 X 符号的按钮，开启travis支持。</p>
+<ul>
+<li>安装travis<br>Travis安装需要Ruby环境，所有需要安装Ruby,并且需要安装rubygems插件。<blockquote>
+<p>假设已经安装了Ruby！</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 安装travis</span><br><span class="line">gem install travis</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建配置文件<br>首先打开博客项目文件夹，在项目根目录新建.travis.yml配置文件。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*&lt;--! cd 博客项目文件夹根目录 !--&gt; */</span></span><br><span class="line">$ touch .travis.yml</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制ssh私钥<br>在项目根目录创建文件夹.travis</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir .travis</span><br></pre></td></tr></table></figure>
+<p>将开始生成的ssh密钥文件id_rsa_bolg复制到.travis文件夹下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 注意文件路径 */</span></span><br><span class="line">cp ~<span class="regexp">/.ssh/i</span>d_rsa_blog .travis/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ssh配置文件<br>这个ssh配置文件是用于在部署机器上使用的，不是本地的ssh配置文件，后面的travis配置文件会用到。</li>
+</ul>
+<p>在.travis文件夹中新建文件ssh_config<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch .travis/ssh_config</span><br></pre></td></tr></table></figure></p>
+<p>编辑配置文件，添加如下内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">User git</span><br><span class="line">StrictHostKeyChecking no</span><br><span class="line">IdentityFile ~<span class="regexp">/.ssh/i</span>d_rsa</span><br><span class="line">IdentitiesOnly yes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>登陆travis</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">travis login --auto</span><br></pre></td></tr></table></figure>
+<p>根据提示输入github的用户名和密码。</p>
+<ul>
+<li><p>加密操作</p>
+<p>在这一步使用了其他的方法，也许是win7的电脑不一样，使用了另一种方法，第一种方法参考：<a href="http://www.jianshu.com/p/7f05b452fd3a" target="_blank" rel="noopener">常用配置方法</a>。</p>
+</li>
+</ul>
+<p>当使用travis 加密操作时，<code>travis encrypt &#39;REPO_TOKEN=&lt;TOKEN&gt;&#39; --add</code></p>
+<p>得到的反馈是：</p>
+<p><code>Can&#39;t figure out GitHub repo name. Ensure you&#39;re in the repo directory, or speci
+fy the repo name via the -r option (e.g. travis &lt;command&gt; -r &lt;owner&gt;/&lt;repo&gt;)</code></p>
+<p>按照错误提示重新加密：</p>
+<p><code>travis encrypt -r Corbusier/Corbusier.github.io GH_Token=XXX</code>可以在CMD中得到形如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">env:</span><br><span class="line">  global:</span><br><span class="line">    - GH_REF: github.com/iissnan/theme-next-docs.git</span><br><span class="line">    - secure: <span class="string">"XXXXXX"</span></span><br></pre></td></tr></table></figure>
+<p>将其复制到<code>.travis.yml</code>配置文件中使用。<br>完整配置文件的参考：<a href="https://github.com/Corbusier/Corbusier.github.io/blob/dev/.travis.yml" target="_blank" rel="noopener">travis配置文件</a></p>
+<h3 id="本地提交操作"><a href="#本地提交操作" class="headerlink" title="本地提交操作"></a>本地提交操作</h3><p>配置完成后需要本地提交，删除原先产生的<code>.git</code>文件夹，执行初始化操作：</p>
+<p><code>$ git init</code></p>
+<p>关联远程仓库<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ # 将github仓库改为自己的</span><br><span class="line">$ git remote add origin git@github.com:Corbusier/Corbusier.github.io.git</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>推送仓库提交本地修改，推送至github仓库。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ # 添加文件</span><br><span class="line">$ git add .</span><br><span class="line">$ # 提交修改</span><br><span class="line">$ git commit -m <span class="string">"test travis"</span></span><br><span class="line">$ # 推送至远程仓库</span><br><span class="line">$ git push -u origin dev</span><br></pre></td></tr></table></figure>
+<p>在commit后，推送至<code>dev</code>分支前，需要先查看git分支，然后创建<code>dev</code>分支后才能推送成功，附git基础命令：<br><a href="http://www.cnblogs.com/newpanderking/p/4005698.html" target="_blank" rel="noopener">git基础命令</a></p>
+<p>push本地的代码至远程仓库之后，在<a href="https://travis-ci.org后台查看相关情况。" target="_blank" rel="noopener">https://travis-ci.org后台查看相关情况。</a><br>下面是成功的结果：</p>
+<blockquote>
+<p>！！！之后用图取代链接<br><a href="https://travis-ci.org/Corbusier/Corbusier.github.io" target="_blank" rel="noopener">travis</a></p>
+</blockquote>
+<p>以上就是自动部署Hexo的另一方法。</p>
+<h2 id="异地同步博客内容"><a href="#异地同步博客内容" class="headerlink" title="异地同步博客内容"></a>异地同步博客内容</h2><p>如何将两台电脑上博客的内容同步内，即两台电脑上都可以编辑更新博客？要解决这个问题，首先我们要清楚我们博客文件的组成：</p>
+<ul>
+<li>node_modules</li>
+<li>public</li>
+<li>scaffolds</li>
+<li>source</li>
+<li>themes</li>
+<li>_config_yml</li>
+<li>db.json</li>
+<li>package.json</li>
+<li>.deploy_git</li>
+</ul>
+<p>我们博客上呈现的内容，其实就是public下的文件内容。那么这个Pulic目录是怎么生成的呢？<br>以下文件以及目录是必须要同步的：</p>
+<ul>
+<li>source</li>
+<li>themes</li>
+<li>_config.yml</li>
+<li>db.json</li>
+<li>package.json</li>
+<li>.deploy_git</li>
+</ul>
+<p>采用github去备份，也就是新建一个项目用来存放以上文件，每次更新后推送到github上，用作备份同步。<br>假设我们现在配置了一台新电脑，里面没有安装任何有关博客的东西，那么我们开始吧：</p>
+<ul>
+<li>下载node.js并安装（官网下载安装），默认会安装npm。</li>
+<li>下载安装git（官网下载安装）</li>
+<li>下载安装hexo。方法：打开cmd 运行npm install -g hexo（要翻墙）</li>
+<li>新建一个文件夹，如MyBlog</li>
+<li>进入该文件夹内，右击运行git，输入：hexo init（生成hexo模板，可能要翻墙)</li>
+</ul>
+<p>我们重复了一开始搭建博客的步骤，重新生成了一个新的模板，这个模板中包含了hexo生成的一些文件。</p>
+<ul>
+<li>git clone 我们备份的项目，生成一个文件夹，如：MyBlogData </li>
+<li>将MyBlog里面的node_modules、scaffolds文件夹复制到MyBlogData里面。</li>
+</ul>
+<p>做完这些，从表面上看，两台电脑上MyBlogData目录下的文件应该都是一样的了。那么我们运行hexo g &amp;&amp; hexo d试试，如果会报错，则往下看。</p>
+<blockquote>
+<p>这是因为.deploy_git没有同步，在MyBlogData目录内运行:npm install hexo-deployer-git –save后再次推送即可</p>
+</blockquote>
+<p>总结流程：当我们每次更新MyBlog内容后，先利用hexo将public推送到github，然后再将其余必须同步的文件利用git推送到github。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="hexo常用命令"><a href="#hexo常用命令" class="headerlink" title="hexo常用命令"></a>hexo常用命令</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">hexo help #查看帮助</span><br><span class="line">    hexo init #初始化一个目录</span><br><span class="line">    hexo new "postName" #新建文章</span><br><span class="line">    hexo new page "pageName" #新建页面</span><br><span class="line">    hexo generate #生成网页，可以在 public 目录查看整个网站的文件</span><br><span class="line">    hexo server #本地预览，'Ctrl+C'关闭</span><br><span class="line">    hexo deploy #部署.deploy目录</span><br><span class="line">    hexo clean #清除缓存，强烈建议每次执行命令前先清理缓存，每次部署前先删除 .deploy 文件夹</span><br><span class="line">    </span><br><span class="line">    简写：</span><br><span class="line">    hexo n == hexo <span class="keyword">new</span></span><br><span class="line">    hexo g == hexo generate</span><br><span class="line">    hexo s == hexo server</span><br><span class="line">    hexo d == hexo deploy</span><br><span class="line">    </span><br><span class="line">    hexo命令组合：</span><br><span class="line">    hexo clean &amp;&amp; hexo g -s，就是清除、生成、启动hexo clean &amp;&amp; hexo g -d，就是清除、生成、部署</span><br></pre></td></tr></table></figure>
+<h2 id="扩展hexo"><a href="#扩展hexo" class="headerlink" title="扩展hexo"></a>扩展hexo</h2><h3 id="添加最近访客"><a href="#添加最近访客" class="headerlink" title="添加最近访客"></a>添加最近访客</h3><p>在需要添加最近访客的网页对应的 markdown 文件中添加如下代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"ds-recent-visitors"</span> data-num-items=<span class="string">"39"</span> data-avatar-size=<span class="string">"40"</span> id=<span class="string">"ds-recent-visitors"</span>&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="鼠标点击小红心的设置"><a href="#鼠标点击小红心的设置" class="headerlink" title="鼠标点击小红心的设置"></a>鼠标点击小红心的设置</h3><ol>
+<li>将 love.js 文件添加到 \themes\next\source\js\src 文件目录下。</li>
+<li>找到 \themes\next\layout_layout.swing 文件， 在文件的后面， 标签之前 添加以下代码：</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"/js/src/love.js"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="背景的设置"><a href="#背景的设置" class="headerlink" title="背景的设置"></a>背景的设置</h3><ol>
+<li>将 particle.js 文件添加到 \themes\next\source\js\src 文件目录下。</li>
+<li>找到 \themes\next\layout_layout.swing 文件， 在文件的后面，标签之前 添加以下代码：</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"/js/src/particle.js"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="修改文章内链接文本样式"><a href="#修改文章内链接文本样式" class="headerlink" title="修改文章内链接文本样式"></a>修改文章内链接文本样式</h3><p>将链接文本设置为蓝色，鼠标划过时文字颜色加深，并显示下划线。<br>找到文件 themes\next\source\css_custom\custom.styl ，添加如下 css 样式：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post-body</span> <span class="selector-tag">p</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#0593d3</span>;</span><br><span class="line">  <span class="attribute">border-bottom</span>: none;</span><br><span class="line">  &amp;:hover &#123;</span><br><span class="line">    <span class="selector-tag">color</span>: <span class="selector-id">#0477ab</span>;</span><br><span class="line">    <span class="selector-tag">text-decoration</span>: <span class="selector-tag">underline</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="添加来必力评论功能"><a href="#添加来必力评论功能" class="headerlink" title="添加来必力评论功能"></a>添加来必力评论功能</h3><p><a href="https://blog.smoker.cc/web/add-comments-livere-for-hexo-theme-next.html" target="_blank" rel="noopener">参考链接</a></p>
+<h3 id="给-Github-添加-README"><a href="#给-Github-添加-README" class="headerlink" title="给 Github 添加 README"></a>给 Github 添加 README</h3><p>默认情况下，Github中每一个项目，我们希望有一份 README.md 的文件来作为项目的说明，但是我们在项目根目录下的 blog\source 目录下创建一份 README.md 文件，写好说明介绍，部署的时候，这个 README.md 会被 hexo 解析掉，而不会被解析到 Github 中去的。<br>正确的解决方法其实很简单：</p>
+<blockquote>
+<p>把 README.md 文件的后缀名改成 “MDOWN” 然后扔到blog/source文件夹下即可，这样 hexo 不会解析，Github 也会将其作为 MD 文件解析。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/node-js、git、hexo/" rel="tag"># node.js、git、hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/17/深入理解学习webpack/" rel="next" title="深入理解学习webpack">
+                <i class="fa fa-chevron-left"></i> 深入理解学习webpack
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/19/Chrome调试技巧/" rel="prev" title="Chrome调试技巧">
+                Chrome调试技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期的准备"><span class="nav-number">1.</span> <span class="nav-text">前期的准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置SSH"><span class="nav-number">1.1.</span> <span class="nav-text">配置SSH</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加公钥到github："><span class="nav-number">1.1.1.</span> <span class="nav-text">添加公钥到github：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试SSH"><span class="nav-number">1.1.2.</span> <span class="nav-text">测试SSH</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客本地仓库的创建"><span class="nav-number">2.</span> <span class="nav-text">博客本地仓库的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地安装hexo"><span class="nav-number">3.</span> <span class="nav-text">本地安装hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试hexo"><span class="nav-number">4.</span> <span class="nav-text">测试hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署hexo"><span class="nav-number">5.</span> <span class="nav-text">部署hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo常用参数设置"><span class="nav-number">6.</span> <span class="nav-text">hexo常用参数设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件说明"><span class="nav-number">6.1.</span> <span class="nav-text">配置文件说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用插件"><span class="nav-number">6.2.</span> <span class="nav-text">常用插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题"><span class="nav-number">7.</span> <span class="nav-text">主题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#切换主题"><span class="nav-number">7.1.</span> <span class="nav-text">切换主题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用travis部署hexo"><span class="nav-number">8.</span> <span class="nav-text">使用travis部署hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置多个SSH"><span class="nav-number">8.1.</span> <span class="nav-text">配置多个SSH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Travis"><span class="nav-number">8.2.</span> <span class="nav-text">配置Travis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地提交操作"><span class="nav-number">8.3.</span> <span class="nav-text">本地提交操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异地同步博客内容"><span class="nav-number">9.</span> <span class="nav-text">异地同步博客内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">10.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo常用命令"><span class="nav-number">10.1.</span> <span class="nav-text">hexo常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展hexo"><span class="nav-number">11.</span> <span class="nav-text">扩展hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加最近访客"><span class="nav-number">11.1.</span> <span class="nav-text">添加最近访客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标点击小红心的设置"><span class="nav-number">11.2.</span> <span class="nav-text">鼠标点击小红心的设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#背景的设置"><span class="nav-number">11.3.</span> <span class="nav-text">背景的设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改文章内链接文本样式"><span class="nav-number">11.4.</span> <span class="nav-text">修改文章内链接文本样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加来必力评论功能"><span class="nav-number">11.5.</span> <span class="nav-text">添加来必力评论功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#给-Github-添加-README"><span class="nav-number">11.6.</span> <span class="nav-text">给 Github 添加 README</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

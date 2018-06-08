@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="“Comment or not comment, that is the question”">
+<meta name="keywords" content="代码注释">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码注释(转)">
+<meta property="og:url" content="http://yoursite.com/2018/04/24/代码注释(转)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="“Comment or not comment, that is the question”">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/codenote.jpg">
+<meta property="og:updated_time" content="2018-04-24T12:27:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="代码注释(转)">
+<meta name="twitter:description" content="“Comment or not comment, that is the question”">
+<meta name="twitter:image" content="http://yoursite.com/images/codenote.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/24/代码注释(转)/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>代码注释(转) | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/24/代码注释(转)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">代码注释(转)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-04-24 20:27:34" itemprop="dateCreated datePublished" datetime="2018-04-24T20:27:34+08:00">2018-04-24</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码注释/" itemprop="url" rel="index"><span itemprop="name">代码注释</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>“Comment or not comment, that is the question”</p>
+</blockquote>
+<p><img src="/images/codenote.jpg" alt="js代码注释" align="center" width="640px" height="280px"><br><a id="more"></a></p>
+<h2 id="01-注释的目的和原则"><a href="#01-注释的目的和原则" class="headerlink" title="01.注释的目的和原则"></a>01.注释的目的和原则</h2><h3 id="purpose"><a href="#purpose" class="headerlink" title="purpose"></a>purpose</h3><ul>
+<li>提高代码的可读性，从而提高代码的可维护性</li>
+</ul>
+<h3 id="principle"><a href="#principle" class="headerlink" title="principle"></a>principle</h3><ul>
+<li>如无必要，勿增注释 ( As short as possible )</li>
+<li>如有必要，尽量详尽 ( As long as necessary )</li>
+</ul>
+<blockquote>
+<p>代码是写给维护者看的，只是偶尔的在服务器上运行</p>
+</blockquote>
+<p>好的代码会给自己注释而无需多加说明，本身就拥有较高的可读性。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="comment">// 如果已经准备好数据，就渲染表格</span></span><br><span class="line"><span class="keyword">if</span> (data.success &amp;&amp; data.result.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  renderTable(data);  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="keyword">const</span> isTableDataReady = data.success &amp;&amp; data.result.length &gt; <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (isTableDataReady) &#123;</span><br><span class="line">  renderTable(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="02-什么是好注释，什么是坏注释"><a href="#02-什么是好注释，什么是坏注释" class="headerlink" title="02.什么是好注释，什么是坏注释"></a>02.什么是好注释，什么是坏注释</h2><p>好的注释包括：</p>
+<ul>
+<li>帮助读者更好地了解代码逻辑和结构，例如：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">init: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 获取配置信息</span></span><br><span class="line">  <span class="keyword">const</span> config = getConfig();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 获取用户信息</span></span><br><span class="line">  <span class="keyword">const</span> userInfo = getUserInfo();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 根据配置和用户信息，进行初始化</span></span><br><span class="line">  doInit(config, userInfo);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 如果存在自定义配置时的特殊逻辑</span></span><br><span class="line">  <span class="keyword">if</span> (config.custom) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>特殊或不易理解写法的解释说明，例如：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * parseInt was the reason my code was slow. </span></span><br><span class="line"><span class="comment"> * Bitshifting the String to coerce it to a </span></span><br><span class="line"><span class="comment"> * Number made it a lot faster. </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> val = inputValue &gt;&gt; <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>特殊标记注释：如 TODO、FIXME 等有特殊含义的标记</li>
+<li>文件注释：部分规约会约定在文件头部书写固定格式的注释，如注明作者、协议等信息</li>
+<li>文档类注释：部分规约会约定 API、类、函数等使用文档类注释（如 jsdoc 风格）</li>
+<li>遵循统一的风格规范，如一定的空格、空行，以保证注释自身的可读性</li>
+</ul>
+<p>坏的注释包括：</p>
+<ul>
+<li>注释对阅读代码无益：如本文第一个示例，本可以不用注释，用清晰的命名、逻辑进行代码自注释</li>
+<li>未遵循统一的风格规范：如单行注释长度、空格、空行，例如：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad 单行注释过长，不易阅读，应写成多行</span></span><br><span class="line"><span class="comment">// parseInt was the reason my code was slow.Bitshifting the String to coerce it to Number made it a lot faster.</span></span><br><span class="line"><span class="keyword">const</span> val = inputValue &gt;&gt; <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * parseInt was the reason my code was slow. </span></span><br><span class="line"><span class="comment"> * Bitshifting the String to coerce it to a </span></span><br><span class="line"><span class="comment"> * Number made it a lot faster. </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">const</span> val = inputValue &gt;&gt; <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>情绪性注释：如抱怨、歧视、搞怪等</li>
+</ul>
+<h2 id="03-如何写好注释"><a href="#03-如何写好注释" class="headerlink" title="03.如何写好注释"></a>03.如何写好注释</h2><h3 id="注释规约"><a href="#注释规约" class="headerlink" title="注释规约"></a>注释规约</h3><p>理解注释的目的和原则，制定并遵循一份注释规约，以保证注释的可读性和一致性</p>
+<h3 id="工具保障"><a href="#工具保障" class="headerlink" title="工具保障"></a>工具保障</h3><p>比如使用 ESLint 保证注释风格的一致，使用 Sonar 检查项目注释率</p>
+<h2 id="04-注释规约"><a href="#04-注释规约" class="headerlink" title="04.注释规约"></a>04.注释规约</h2><h3 id="4-1-【推荐】单行注释使用"><a href="#4-1-【推荐】单行注释使用" class="headerlink" title="4.1 【推荐】单行注释使用 //"></a>4.1 【推荐】单行注释使用 //</h3><p>注释应单独一行写在被注释对象的上方，不要追加在某条语句的后面：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="keyword">const</span> active = <span class="literal">true</span>; <span class="comment">// is current tab</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="comment">// is current tab</span></span><br><span class="line"><span class="keyword">const</span> active = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<p>注释行的上方需要有一个空行（除非注释行上方是一个块的顶部），以增加可读性：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getType</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'fetching type...'</span>);  </span><br><span class="line">  <span class="comment">// set the default type to 'no type'</span></span><br><span class="line">  <span class="keyword">const</span> type = <span class="keyword">this</span>.type || <span class="string">'no type'</span>;  </span><br><span class="line">  <span class="keyword">return</span> type;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getType</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'fetching type...'</span>);  </span><br><span class="line">  </span><br><span class="line">  <span class="comment">// set the default type to 'no type'</span></span><br><span class="line">  <span class="keyword">const</span> type = <span class="keyword">this</span>.type || <span class="string">'no type'</span>;  </span><br><span class="line">  <span class="keyword">return</span> type;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="comment">// 注释行上面是一个块的顶部时不需要空行</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getType</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">  <span class="comment">// set the default type to 'no type'</span></span><br><span class="line">  <span class="keyword">const</span> type = <span class="keyword">this</span>.type || <span class="string">'no type'</span>;					</span><br><span class="line">  <span class="keyword">return</span> type;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-【推荐】多行注释使用-…-，而不是多行的"><a href="#4-2-【推荐】多行注释使用-…-，而不是多行的" class="headerlink" title="4.2 【推荐】多行注释使用 /* … /，而不是多行的 //"></a>4.2 【推荐】多行注释使用 /*<em> … </em>/，而不是多行的 //</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="comment">// make() returns a new element</span></span><br><span class="line"><span class="comment">// based on the passed in tag name</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make</span>(<span class="params">tag</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> element;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * make() returns a new element</span></span><br><span class="line"><span class="comment"> * based on the passed-in tag name</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make</span>(<span class="params">tag</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> element;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-【强制】注释内容和注释符之间需要有一个空格，以增加可读性。eslint-spaced-comment"><a href="#4-3-【强制】注释内容和注释符之间需要有一个空格，以增加可读性。eslint-spaced-comment" class="headerlink" title="4.3 【强制】注释内容和注释符之间需要有一个空格，以增加可读性。eslint: spaced-comment"></a>4.3 【强制】注释内容和注释符之间需要有一个空格，以增加可读性。eslint: spaced-comment</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="comment">//is current tab</span></span><br><span class="line"><span class="keyword">const</span> active = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="comment">// is current tab</span></span><br><span class="line"><span class="keyword">const</span> active = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bad</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *make() returns a new element</span></span><br><span class="line"><span class="comment"> *based on the passed-in tag name</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make</span>(<span class="params">tag</span>) </span>&#123;  </span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> element;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// good</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * make() returns a new element</span></span><br><span class="line"><span class="comment"> * based on the passed-in tag name</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make</span>(<span class="params">tag</span>) </span>&#123;  </span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> element;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-4-【推荐】使用特殊注释标记"><a href="#4-4-【推荐】使用特殊注释标记" class="headerlink" title="4.4 【推荐】使用特殊注释标记"></a>4.4 【推荐】使用特殊注释标记</h3><p>有时我们发现某个可能的 bug，但因为一些原因还没法修复；或者某个地方还有一些待完成的功能，这时我们需要使用相应的特殊标记注释来告知未来的自己或合作者。常用的特殊标记有两种：</p>
+<ul>
+<li>// FIXME: 说明问题是什么</li>
+<li>// TODO: 说明还要做什么或者问题的解决方案</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Calculator</span> <span class="keyword">extends</span> <span class="title">Abacus</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">	<span class="keyword">super</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// <span class="doctag">FIXME:</span> shouldn’t use a global here</span></span><br><span class="line">	total = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span> total should be configurable by an options param</span></span><br><span class="line">	<span class="keyword">this</span>.total = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-5-【推荐】文档类注释，如函数、类、文件、事件等，使用-jsdoc-规范"><a href="#4-5-【推荐】文档类注释，如函数、类、文件、事件等，使用-jsdoc-规范" class="headerlink" title="4.5 【推荐】文档类注释，如函数、类、文件、事件等，使用 jsdoc 规范"></a>4.5 【推荐】文档类注释，如函数、类、文件、事件等，使用 jsdoc 规范</h3><p>例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Book类，代表一个书本.</span></span><br><span class="line"><span class="comment"> * @constructor</span></span><br><span class="line"><span class="comment"> * @param &#123;string&#125; title - 书本的标题.</span></span><br><span class="line"><span class="comment"> * @param &#123;string&#125; author - 书本的作者.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Book</span>(<span class="params">title, author</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.title=title;</span><br><span class="line">  <span class="keyword">this</span>.author=author;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Book.prototype=&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 获取书本的标题</span></span><br><span class="line"><span class="comment">   * @returns &#123;string|*&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  getTitle:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.title;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 设置书本的页数</span></span><br><span class="line"><span class="comment">   * @param pageNum &#123;number&#125; 页数</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  setPageNum:<span class="function"><span class="keyword">function</span>(<span class="params">pageNum</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.pageNum=pageNum;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="05-工具"><a href="#05-工具" class="headerlink" title="05.工具"></a>05.工具</h2><p>我们可以使用一些工具来保证注释质量，例如：</p>
+<h3 id="Eslint：保证一致的注释风格"><a href="#Eslint：保证一致的注释风格" class="headerlink" title="Eslint：保证一致的注释风格"></a>Eslint：保证一致的注释风格</h3><p>ESLint 中有一些注释相关的规则，用户可选择开启：</p>
+<ul>
+<li>valid-jsdoc</li>
+<li>require-jsdoc</li>
+<li>no-warning-comments</li>
+<li>capitalized-comments</li>
+<li>line-comment-position</li>
+<li>lines-around-comment</li>
+<li>multiline-comment-style</li>
+<li>no-inline-comments</li>
+<li>spaced-comment</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/代码注释/" rel="tag"># 代码注释</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/18/vuex-cart/" rel="next" title="vuex-cart 介绍">
+                <i class="fa fa-chevron-left"></i> vuex-cart 介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/09/探探滑动组件/" rel="prev" title="探探滑动组件">
+                探探滑动组件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01-注释的目的和原则"><span class="nav-number">1.</span> <span class="nav-text">01.注释的目的和原则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#purpose"><span class="nav-number">1.1.</span> <span class="nav-text">purpose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#principle"><span class="nav-number">1.2.</span> <span class="nav-text">principle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-什么是好注释，什么是坏注释"><span class="nav-number">2.</span> <span class="nav-text">02.什么是好注释，什么是坏注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-如何写好注释"><span class="nav-number">3.</span> <span class="nav-text">03.如何写好注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注释规约"><span class="nav-number">3.1.</span> <span class="nav-text">注释规约</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具保障"><span class="nav-number">3.2.</span> <span class="nav-text">工具保障</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-注释规约"><span class="nav-number">4.</span> <span class="nav-text">04.注释规约</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-【推荐】单行注释使用"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 【推荐】单行注释使用 //</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-【推荐】多行注释使用-…-，而不是多行的"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 【推荐】多行注释使用 /* … /，而不是多行的 //</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-【强制】注释内容和注释符之间需要有一个空格，以增加可读性。eslint-spaced-comment"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 【强制】注释内容和注释符之间需要有一个空格，以增加可读性。eslint: spaced-comment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-【推荐】使用特殊注释标记"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 【推荐】使用特殊注释标记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-【推荐】文档类注释，如函数、类、文件、事件等，使用-jsdoc-规范"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 【推荐】文档类注释，如函数、类、文件、事件等，使用 jsdoc 规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#05-工具"><span class="nav-number">5.</span> <span class="nav-text">05.工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eslint：保证一致的注释风格"><span class="nav-number">5.1.</span> <span class="nav-text">Eslint：保证一致的注释风格</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="MVC/MVVM都是常见的软件架构设计模式，它们是一种改进代码的组织方式，并不是一种设计模式，一个架构模式可能包含了多种设计模式。">
+<meta name="keywords" content="design-model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端开发的MVC&#x2F;MVVM模式">
+<meta property="og:url" content="http://yoursite.com/2018/05/29/MVVM、MVC架构模式/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MVC/MVVM都是常见的软件架构设计模式，它们是一种改进代码的组织方式，并不是一种设计模式，一个架构模式可能包含了多种设计模式。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/MVVM_MVC.jpeg">
+<meta property="og:image" content="https://lc-mhke0kuv.cn-n1.lcfile.com/4badd8fe694272d5a430.png">
+<meta property="og:image" content="https://lc-mhke0kuv.cn-n1.lcfile.com/9da7ababda36b88a5dd7.png">
+<meta property="og:image" content="https://lc-mhke0kuv.cn-n1.lcfile.com/1fba28fee8c9c5eeb021.png">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1frk1273do6j30ka0aujrc.jpg">
+<meta property="og:updated_time" content="2018-05-29T09:54:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端开发的MVC&#x2F;MVVM模式">
+<meta name="twitter:description" content="MVC/MVVM都是常见的软件架构设计模式，它们是一种改进代码的组织方式，并不是一种设计模式，一个架构模式可能包含了多种设计模式。">
+<meta name="twitter:image" content="http://yoursite.com/images/MVVM_MVC.jpeg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/29/MVVM、MVC架构模式/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端开发的MVC/MVVM模式 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/MVVM、MVC架构模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端开发的MVC/MVVM模式
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-05-29 17:54:00" itemprop="dateCreated datePublished" datetime="2018-05-29T17:54:00+08:00">2018-05-29</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/design-model/" itemprop="url" rel="index"><span itemprop="name">design-model</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/MVVM_MVC.jpeg" alt="asynchronous" align="center" width="640px" height="280px"></p>
+<p>MVC/MVVM都是常见的软件架构设计模式，它们是一种改进代码的组织方式，并不是一种设计模式，一个架构模式可能包含了多种设计模式。<br><a id="more"></a></p>
+<h2 id="Model-amp-View"><a href="#Model-amp-View" class="headerlink" title="Model &amp; View"></a>Model &amp; View</h2><p><img src="https://lc-mhke0kuv.cn-n1.lcfile.com/4badd8fe694272d5a430.png" alt=""></p>
+<p>上面显示数值，两个按钮可以对数值进行加减操作，操作后的数值会更新显示。</p>
+<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>Model层用于封装业务逻辑相关的数据以及处理数据的方法。将用到的方法封装到Model中，并且定义了三个不同的操作方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myapp = &#123;&#125;</span><br><span class="line">myapp.Model = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">/* 需要操作的数据 */</span></span><br><span class="line">	<span class="keyword">var</span> val = <span class="number">0</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 操作数据的方法 */</span></span><br><span class="line">	<span class="keyword">this</span>.add = <span class="function"><span class="keyword">function</span>(<span class="params">v</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(val &lt; <span class="number">100</span>) val += v</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">this</span>.sub = <span class="function"><span class="keyword">function</span>(<span class="params">v</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(val &gt;<span class="number">0</span>) val -= v</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">this</span>.getVal = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> val</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p>View作为视图层，主要负责数据的展示。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">myapp.View = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">/* 视图元素 */</span></span><br><span class="line">	val $num = $(<span class="string">'#num'</span>),</span><br><span class="line">		$incBtn = $(<span class="string">'#increase'</span>),</span><br><span class="line">		$decBtn = $(<span class="string">'#decrease'</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 渲染数据 */</span></span><br><span class="line">	<span class="keyword">this</span>.render = <span class="function"><span class="keyword">function</span>(<span class="params">model</span>) </span>&#123;</span><br><span class="line">		$num.text(model.getVal() + <span class="string">'rmb'</span>) </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过Model&amp;View完成了数据从模型层到视图层的逻辑。但是作为一个程序，还需要响应用户的操作，同步更新View和Model。所以MVC中引入了controller，它来定义界面对用户输入的响应方式，连接模型和视图。</p>
+<h2 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h2><p><img src="https://lc-mhke0kuv.cn-n1.lcfile.com/9da7ababda36b88a5dd7.png" alt=""></p>
+<p>实现代表方法调用，虚线代表事件通知。</p>
+<p>用户对View的操作由Controller处理，在Controller中响应View的事件调用Model的接口对数据进行操作，当Model发生变化时，通知相关视图进行更新。</p>
+<h3 id="Model-1"><a href="#Model-1" class="headerlink" title="Model"></a>Model</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">myapp.Model = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> val = <span class="number">0</span></span><br><span class="line">	<span class="keyword">this</span>.add = <span class="function"><span class="keyword">function</span>(<span class="params">v</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(val &lt; <span class="number">100</span>) val += v</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">this</span>.sub = <span class="function"><span class="keyword">function</span>(<span class="params">v</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(val &gt; <span class="number">0</span>) val -= v</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">this</span>.getVal = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> val</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 观察者模式,订阅数据的变化 */</span></span><br><span class="line">	<span class="keyword">var</span> self = <span class="keyword">this</span>,</span><br><span class="line">		views = [];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">this</span>.register = <span class="function"><span class="keyword">function</span>(<span class="params">view</span>) </span>&#123;</span><br><span class="line">		views.push(view)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 通知View更新视图 */</span></span><br><span class="line">	<span class="keyword">this</span>.notify = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;views.length;i++) &#123;</span><br><span class="line">			views[i].render(self)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Model和View之间使用了观察者模式，View事先在Model上注册，进而观察Model，以便更新在Model上发生改变的数据。</p>
+<h3 id="View-1"><a href="#View-1" class="headerlink" title="View"></a>View</h3><p>View引入了Controller的实例来实现特定的响应策略，比如按钮中的<code>click</code>事件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">myapp.View = <span class="function"><span class="keyword">function</span>(<span class="params">controller</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> $num = $(<span class="string">'#num'</span>),</span><br><span class="line">		$incBtn = $(<span class="string">'#increase'</span>),</span><br><span class="line">		$decBtn = $(<span class="string">'#decrease'</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 将model数据更新到视图 */</span></span><br><span class="line">	<span class="keyword">this</span>.render = <span class="function"><span class="keyword">function</span>(<span class="params">model</span>) </span>&#123;</span><br><span class="line">		$num.text(model.getVal() + <span class="string">'rmb'</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 绑定事件 */</span></span><br><span class="line">	$incBtn.click(controller.increase)</span><br><span class="line">	$decBtn.click(controller.decrease)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>控制器是模型和视图之间的纽带，MVC将响应机制封装在Controller对象中，当用户和应用产生交互时，控制器中的事件触发器就开始工作了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">myapp.Controller = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> model = <span class="literal">null</span>,</span><br><span class="line">		view = <span class="literal">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">this</span>.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="comment">/* 初始化Model和View */</span></span><br><span class="line">		model = <span class="keyword">new</span> myapp.Model()</span><br><span class="line">		view  = <span class="keyword">new</span> myapp.View(<span class="keyword">this</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">/* View订阅Model数据,当数据变化时,通知View更新视图 */</span></span><br><span class="line">		model.register(view)</span><br><span class="line">		model.notify()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Model更新数值,继而通知View更新视图 */</span></span><br><span class="line">	<span class="keyword">this</span>.increase = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		model.add(<span class="number">1</span>)</span><br><span class="line">		model.notify()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">this</span>.decrease = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		model.sub(<span class="number">1</span>)</span><br><span class="line">		model.notify()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一部分使用了观察者模式，实例化View并向对应的Model实例注册，当Model发生变化时，就通知View更新。</p>
+<p>当执行应用时，使用Controller初始化：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> controller = <span class="keyword">new</span> myapp.Controller()</span><br><span class="line">	controller.init()</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
+<p>MVC的业务逻辑主要在Controller中，而View层也有独立处理用户事件的能力，当每个事件流经Controller时，这层会变得臃肿。并且MVC中View和Controller一般是一一对应的。视图和控制器之间的联系过于紧密，Controller的复用性成了问题。</p>
+<h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><p>MVVM(Model-View-ViewModel)，ViewModel指的是“Model of View”，视图的模型。<br><img src="https://lc-mhke0kuv.cn-n1.lcfile.com/1fba28fee8c9c5eeb021.png" alt=""></p>
+<p>MVVM把View和Model的同步逻辑自动化，不再需要手动操作，而是交给数据绑定功能负责，只需要告诉它View显示的数据对应的是Model的哪个部分。</p>
+<h3 id="Model-2"><a href="#Model-2" class="headerlink" title="Model"></a>Model</h3><p>在Model中只关注数据本身，没有其他任何行为(格式化数据由View完成)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;</span><br><span class="line">  val: <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="View-2"><a href="#View-2" class="headerlink" title="View"></a>View</h3><p>MVVM中的View通过模板语法来声明式的将数据渲染进DOM，当ViewModel对Model进行更新时，会通过数据绑定更新到View。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"app"</span>&gt;</span><br><span class="line">       &lt;div&gt;</span><br><span class="line">           &lt;span&gt;&#123;&#123; val &#125;&#125;&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">       &lt;/</span>div&gt;</span><br><span class="line">       &lt;div&gt;</span><br><span class="line">           &lt;button @click=<span class="string">"sub(1)"</span>&gt;-&lt;/button&gt;</span><br><span class="line">           &lt;button @click=<span class="string">"add(1)"</span>&gt;+&lt;/button&gt;</span><br><span class="line">       &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">   &lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="ViewModel"><a href="#ViewModel" class="headerlink" title="ViewModel"></a>ViewModel</h3><p>ViewModel相当于MVC的Controller。也就是业务逻辑。双向绑定可以使View和Model之间互相响应变化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">	el: <span class="string">'#app'</span>,</span><br><span class="line">	data: data,</span><br><span class="line">	methods: &#123;</span><br><span class="line">		add(v) &#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="keyword">this</span>.val &lt; <span class="number">100</span>) &#123;</span><br><span class="line">				<span class="keyword">this</span>.val += v</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		sub(v) &#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="keyword">this</span>.val &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">this</span>.val -= v</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这样的模式可以将View和Model之间的耦合度降低，业务逻辑能从View层中剥离。</p>
+<h3 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h3><p>Vue运用了双向绑定技术，也就是ES5的<code>Object.defineProperty</code>。目前几种MVVM框架中实现数据绑定有这几种方法：</p>
+<ul>
+<li>数据劫持(Vue)</li>
+<li>发布订阅模式(Knockout、Backbone)</li>
+<li>脏值检测(Angular)</li>
+</ul>
+<p>用一张网上比较流行的图来解释说明Vue的基本原理：<br><img src="https://ws4.sinaimg.cn/large/006tNc79ly1frk1273do6j30ka0aujrc.jpg" alt=""></p>
+<p>实现Vue的双向数据绑定分为三个模块：Observe、Compile、Watcher。Vue采用了发布订阅者的架构模式，运用ES5的<code>Object.defineProperty</code>劫持各属性的<code>getter</code>、<code>setter</code>，并在数据发生变动时通知订阅者，触发相应的监听回调。</p>
+<ul>
+<li><p>Observe 数据监听<br>负责对数据对象所有属性进行劫持，监听到数据变化后通知订阅者。</p>
+</li>
+<li><p>Compile 解析指令<br>扫描模版，对指令进行解析，然后绑定事件。</p>
+</li>
+<li><p>Watcher 订阅者<br>关联<code>Observe</code>和<code>Compile</code>，订阅并收到属性变动的通知，执行解析指令上的回调函数。<code>Update</code>是其自身的方法，用于执行<code>Compile</code>中绑定的回调，更新视图。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>MV*目的都是把数据、业务逻辑、表现层这三部分解耦，分离关注点，有利于测试和维护。业务逻辑不关心底层数据的读写，这些数据以对象的形式呈现给业务逻辑层。</p>
+<p>曾经我也很困惑是应该追逐热点，完全使用已经日臻完善的所谓“新技术”，还是固守以前的成果，用已经成熟的知识去提供解决方案。其实这两点并不完全冲突，应该思考业务场景和开发需求，不同需求自然有合适的方案。</p>
+<p>我们选择它，使用它，就代表了认可它的思想，相信它能提供开发效率，而不仅仅是因为大家都在追逐它们。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/design-model/" rel="tag"># design-model</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/09/探探滑动组件/" rel="next" title="探探滑动组件">
+                <i class="fa fa-chevron-left"></i> 探探滑动组件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/29/设计模式之发布-订阅者模式/" rel="prev" title="设计模式之发布-订阅者模式">
+                设计模式之发布-订阅者模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-amp-View"><span class="nav-number">1.</span> <span class="nav-text">Model &amp; View</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model"><span class="nav-number">1.1.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View"><span class="nav-number">1.2.</span> <span class="nav-text">View</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC"><span class="nav-number">2.</span> <span class="nav-text">MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-1"><span class="nav-number">2.1.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-1"><span class="nav-number">2.2.</span> <span class="nav-text">View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller"><span class="nav-number">2.3.</span> <span class="nav-text">Controller</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVVM"><span class="nav-number">3.</span> <span class="nav-text">MVVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-2"><span class="nav-number">3.1.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-2"><span class="nav-number">3.2.</span> <span class="nav-text">View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewModel"><span class="nav-number">3.3.</span> <span class="nav-text">ViewModel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据绑定"><span class="nav-number">3.4.</span> <span class="nav-text">数据绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="作用域的概念各个变量、函数和对象的可访问性。作用域决定了代码里的变量和其他资源在各个区域中的可见性。">
+<meta name="keywords" content="Scope、Closure">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript作用域">
+<meta property="og:url" content="http://yoursite.com/2017/10/26/JavaScript作用域/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="作用域的概念各个变量、函数和对象的可访问性。作用域决定了代码里的变量和其他资源在各个区域中的可见性。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/Scope.jpg">
+<meta property="og:updated_time" content="2017-10-26T14:30:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript作用域">
+<meta name="twitter:description" content="作用域的概念各个变量、函数和对象的可访问性。作用域决定了代码里的变量和其他资源在各个区域中的可见性。">
+<meta name="twitter:image" content="http://yoursite.com/images/Scope.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/26/JavaScript作用域/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JavaScript作用域 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/JavaScript作用域/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript作用域
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-10-26 22:30:42" itemprop="dateCreated datePublished" datetime="2017-10-26T22:30:42+08:00">2017-10-26</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Basic-JS/" itemprop="url" rel="index"><span itemprop="name">Basic_JS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/Scope.jpg" alt="Scope" align="center" width="640px" height="280px"></p>
+<h2 id="作用域的概念"><a href="#作用域的概念" class="headerlink" title="作用域的概念"></a>作用域的概念</h2><p>各个变量、函数和对象的可访问性。作用域决定了代码里的变量和其他资源在各个区域中的可见性。</p>
+<a id="more"></a>
+<h2 id="JavaScript中的作用域"><a href="#JavaScript中的作用域" class="headerlink" title="JavaScript中的作用域"></a>JavaScript中的作用域</h2><p>JavaScript的作用域分为：</p>
+<ul>
+<li>全局作用域</li>
+<li>局部作用域</li>
+</ul>
+<p>当变量定义在一个函数中时，变量保存在局部作用域中。定义在函数之外的变量则属于全局作用域。每个函数在调用时都会创建自己的作用域。</p>
+<h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><p>在文档中(document)中编写JS时，此时申明的变量和函数都在全局作用域中。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"Nancy"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>全局作用域下的变量能够在其他作用域中被访问和修改。</p>
+<h3 id="局部作用域"><a href="#局部作用域" class="headerlink" title="局部作用域"></a>局部作用域</h3><p>定义在函数中的变量保存在局部作用域中。并且函数在每次调用时都有自己的作用域。同名变量可以用在不同的函数中。因为这些变量绑定在不同的函数中，拥有各自的作用域，彼此之间不能访问。</p>
+<h3 id="块语句"><a href="#块语句" class="headerlink" title="块语句"></a>块语句</h3><p>块级声明包括<code>if</code>和<code>switch</code>，以及<code>for</code>和<code>while</code>循环，与函数不同的是，它们都不会创建新的作用域(ES5以前)，在块级声明中定义的变量属于该块所在的作用域。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">   	<span class="keyword">var</span> name = <span class="string">"Nancy"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(name);<span class="comment">//"Nancy"</span></span><br></pre></td></tr></table></figure></p>
+<p>ES6 引入了<code>let</code>和<code>const</code>关键字，同样作为声明，它们可以创建块级作用域。</p>
+<p>以上的代码如果使用了这两个关键字声明，那么在块级作用域以外的作用域是不可访问到的。一个执行环境中全局作用域的生存周期与该执行环境相同。局部作用域只会在该函数调用执行期间存在。</p>
+<h3 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h3><p>执行上下文与作用域并不相同，执行上下文关系到的是函数执行时的this值。在全局作用域中，执行上下文始终是Window对象，Node环境下是global。</p>
+<p>当程序开始的时候进入全局执行上下文，此时，全局上下文位于栈底并且是栈中的第一个元素。当在全局上下文中调用一个函数时，程序流就进入该被调用函数内，引擎就会为该函数创建一个新的执行上下文，并且将其压入到执行上下文堆栈的顶部。浏览器总是执行堆栈顶部的上下文，一旦执行完毕，该上下文就会从堆栈顶部被弹出，然后，继续执行新的栈顶执行上下文。这样，堆栈中的上下文就会被依次执行并且弹出堆栈，直到重新回到全局的上下文。</p>
+<p>关于执行上下文有这样几个概念：</p>
+<blockquote>
+<p>单线程同步执行、唯一的一个全局上下文，函数上下文个数没有限制，函数被调用就会创建一个新的上下文。</p>
+</blockquote>
+<h3 id="执行环境"><a href="#执行环境" class="headerlink" title="执行环境"></a>执行环境</h3><p>了解过<a href="https://corbusier.github.io/2017/06/17/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener">JavaScript事件循环机制</a>应该知道，JavaScript是一种单线程语言，在同一时间内只能执行单个任务。其他的任务排列在执行环境中。当解析器开始执行代码时，环境(作用域)默认设为全局。全局环境添加到执行环境中。这是执行环境的第一个环境。</p>
+<p>每个函数在调用时都会创建自己的执行环境，并且添加它的环境到执行环境中。</p>
+<p>当浏览器执行完环境中的代码，这个环境会从执行环境中跳出，控制权交回给之前的父环境。浏览器总是先执行在执行栈顶的执行环境(最里层的作用域)。</p>
+<p>全局环境只有一个，函数环境可以有任意多个。<br>执行环境有两个阶段：创建和执行。</p>
+<h4 id="创建阶段"><a href="#创建阶段" class="headerlink" title="创建阶段"></a>创建阶段</h4><p>函数刚被调用但是还未执行时的阶段，主要做了三件事：</p>
+<ul>
+<li>创建变量对象</li>
+<li>创建作用域链</li>
+<li>设置上下文(this)的值</li>
+</ul>
+<h5 id="变量对象"><a href="#变量对象" class="headerlink" title="变量对象"></a>变量对象</h5><p>变量对象(Variable Object)也称为活动对象(activation object)，包含了所有变量、函数和其他在执行环境中定义的声明。当函数调用时，解析器扫描所有资源，包括函数参数、变量和其他声明。以上的所有东西装进一个对象中，它就是变量对象。</p>
+<h5 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h5><p>在变量对象之后创建，它包含了自己执行环境以及所有父环境中包含的变量对象，用于解析变量，保证变量的有序访问。</p>
+<h5 id="执行环境对象"><a href="#执行环境对象" class="headerlink" title="执行环境对象"></a>执行环境对象</h5><p>执行环境对象可以用下面抽象对象表示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">executionContextObject = &#123;</span><br><span class="line">    <span class="string">'scopeChain'</span>: &#123;&#125;, <span class="comment">// contains its own variableObject and other variableObject of the parent execution contexts</span></span><br><span class="line">    <span class="string">'variableObject'</span>: &#123;&#125;, <span class="comment">// contains function arguments, inner variable and function declarations</span></span><br><span class="line">    <span class="string">'this'</span>: valueOfThis</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="代码执行阶段"><a href="#代码执行阶段" class="headerlink" title="代码执行阶段"></a>代码执行阶段</h4><p>执行环境的第二个阶段就是代码执行阶段，进行其他赋值操作并且代码最终被执行。</p>
+<ul>
+<li>变量赋值</li>
+<li>执行代码</li>
+</ul>
+<h3 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h3><p>当函数嵌套时，内层函数有权访问父级作用域的变量等资源。词法作用域也与静态作用域有关。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">grandfather</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">'Hammad'</span>;</span><br><span class="line">    <span class="comment">// likes is not accessible here</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">parent</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// name is accessible here</span></span><br><span class="line">        <span class="comment">// likes is not accessible here</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">child</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// Innermost level of the scope chain</span></span><br><span class="line">            <span class="comment">// name is also accessible here</span></span><br><span class="line">            <span class="keyword">var</span> likes = <span class="string">'Coding'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上的这个函数中，子执行环境可以访问<code>name</code>属性。在不同的执行环境中同名变量优先级在执行栈由上到下增加。内层函数(执行栈顶的环境)有更高的优先级。</p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>闭包与词法作用域相关，当内部函数试图访问外部函数的作用域链(词法作用域之外的变量)时产生闭包。闭包包括自己的作用域链、父级作用域链和全局作用域链。</p>
+<p>闭包不仅能访问外部函数的变量，也能访问外部函数的参数。</p>
+<p>即使闭包函数已经return，仍然能够持续的访问外部函数的所有资源。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    name = <span class="string">'Hammad'</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Hi '</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">greet(); <span class="comment">// nothing happens, no errors</span></span><br><span class="line">greetLetter = greet();</span><br><span class="line"><span class="comment">// calling greetLetter calls the returned function from the greet() function</span></span><br><span class="line">greetLetter(); <span class="comment">// logs 'Hi Hammad'</span></span><br><span class="line"><span class="comment">/*&lt; !--- 或者是  --- &gt;*/</span></span><br><span class="line">greet()();</span><br></pre></td></tr></table></figure></p>
+<p>当直接调用外部函数时，内部的return的函数并不会被调用。所以用一个变量保存外部函数的调用，然后将这个变量当做函数调用。如果不采用这样的方式，可以调用两次外部函数，同样可以调用内部的函数。</p>
+<h3 id="共有作用域和私有作用域"><a href="#共有作用域和私有作用域" class="headerlink" title="共有作用域和私有作用域"></a>共有作用域和私有作用域</h3><p>在JavaScript中并没有共有作用域和私有作用域的概念，可以借助闭包实现这个特性。熟悉的套路是这样的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//private scope</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<p>在其中可以加入变量、方法函数，有些是私有的，不可访问的，有一些我们希望可以是公开能在外部访问到的。可以使用闭包的一种形式，模块模式。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Module = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">privateMethod</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        publicMethod: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// can call privateMethod();</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<p>在Module这个命名空间下，公有函数可以访问私有函数，这样做的优点是显而易见的，但是缺点也一样，在Module命名空间下，同样可以修改这个私有方法。</p>
+<h3 id="使用call、apply、bind改变上下文"><a href="#使用call、apply、bind改变上下文" class="headerlink" title="使用call、apply、bind改变上下文"></a>使用call、apply、bind改变上下文</h3><p>关于这部分，之前的文章中已经有过说明，<a href="https://corbusier.github.io/2017/06/25/call%E3%80%81apply%E3%80%81bind%E6%80%BB%E7%BB%93/#more" target="_blank" rel="noopener">call、apply、bind总结</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Scope、Closure/" rel="tag"># Scope、Closure</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/05/Vue-cli#2.0 webpack 配置分析/" rel="next" title="Vue-cli Webpack 配置分析">
+                <i class="fa fa-chevron-left"></i> Vue-cli Webpack 配置分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/26/input 和 textarea的长度限制/" rel="prev" title="input 和 textarea的长度限制">
+                input 和 textarea的长度限制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用域的概念"><span class="nav-number">1.</span> <span class="nav-text">作用域的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript中的作用域"><span class="nav-number">2.</span> <span class="nav-text">JavaScript中的作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局作用域"><span class="nav-number">2.1.</span> <span class="nav-text">全局作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部作用域"><span class="nav-number">2.2.</span> <span class="nav-text">局部作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块语句"><span class="nav-number">2.3.</span> <span class="nav-text">块语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行上下文"><span class="nav-number">2.4.</span> <span class="nav-text">执行上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行环境"><span class="nav-number">2.5.</span> <span class="nav-text">执行环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建阶段"><span class="nav-number">2.5.1.</span> <span class="nav-text">创建阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量对象"><span class="nav-number">2.5.1.1.</span> <span class="nav-text">变量对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作用域链"><span class="nav-number">2.5.1.2.</span> <span class="nav-text">作用域链</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行环境对象"><span class="nav-number">2.5.1.3.</span> <span class="nav-text">执行环境对象</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码执行阶段"><span class="nav-number">2.5.2.</span> <span class="nav-text">代码执行阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#词法作用域"><span class="nav-number">2.6.</span> <span class="nav-text">词法作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number">2.7.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共有作用域和私有作用域"><span class="nav-number">2.8.</span> <span class="nav-text">共有作用域和私有作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用call、apply、bind改变上下文"><span class="nav-number">2.9.</span> <span class="nav-text">使用call、apply、bind改变上下文</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
