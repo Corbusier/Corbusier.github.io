@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="从客户端性能、服务器端、网络性能考虑。收录的主要是现阶段能使用，并且可以理解运用的部分。  1. 页面内容1.1 减少HTTP请求数前端 80% 的响应时间都消耗在图片、样式、脚本等资源加载上。浏览器对每个域名的连接数有限制，所以减少请求数是缩短响应时间的关键。">
+<meta name="keywords" content="performance optimization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端性能优化准则">
+<meta property="og:url" content="https://corbusier.github.io/2017/06/20/前端性能优化准则/index.html">
+<meta property="og:site_name" content="Awesome_929">
+<meta property="og:description" content="从客户端性能、服务器端、网络性能考虑。收录的主要是现阶段能使用，并且可以理解运用的部分。  1. 页面内容1.1 减少HTTP请求数前端 80% 的响应时间都消耗在图片、样式、脚本等资源加载上。浏览器对每个域名的连接数有限制，所以减少请求数是缩短响应时间的关键。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://corbusier.github.io/images/performance.jpg">
+<meta property="og:updated_time" content="2017-06-20T15:04:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端性能优化准则">
+<meta name="twitter:description" content="从客户端性能、服务器端、网络性能考虑。收录的主要是现阶段能使用，并且可以理解运用的部分。  1. 页面内容1.1 减少HTTP请求数前端 80% 的响应时间都消耗在图片、样式、脚本等资源加载上。浏览器对每个域名的连接数有限制，所以减少请求数是缩短响应时间的关键。">
+<meta name="twitter:image" content="https://corbusier.github.io/images/performance.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://corbusier.github.io/2017/06/20/前端性能优化准则/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端性能优化准则 | Awesome_929</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Awesome_929</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-about"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://corbusier.github.io/2017/06/20/前端性能优化准则/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zoe">
+      <meta itemprop="description" content="心之所向，素履以往。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Awesome_929">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">前端性能优化准则
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-06-20 23:04:02" itemprop="dateCreated datePublished" datetime="2017-06-20T23:04:02+08:00">2017-06-20</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/performance-optimization/" itemprop="url" rel="index"><span itemprop="name">performance optimization</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/performance.jpg" alt="performance" align="center" width="640px" height="280px"></p>
+<blockquote>
+<p>从客户端性能、服务器端、网络性能考虑。收录的主要是现阶段能使用，并且可以理解运用的部分。</p>
+</blockquote>
+<h2 id="1-页面内容"><a href="#1-页面内容" class="headerlink" title="1. 页面内容"></a>1. 页面内容</h2><h3 id="1-1-减少HTTP请求数"><a href="#1-1-减少HTTP请求数" class="headerlink" title="1.1 减少HTTP请求数"></a>1.1 减少HTTP请求数</h3><p>前端 80% 的响应时间都消耗在图片、样式、脚本等资源加载上。浏览器对每个域名的连接数有限制，所以减少请求数是缩短响应时间的关键。<br><a id="more"></a></p>
+<ul>
+<li><p>合并 JavaScript、CSS 等文件</p>
+<ul>
+<li>服务器端（CDN）自动合并</li>
+<li>基于Node.js的合并工具</li>
+</ul>
+</li>
+<li><p>使用CSS Sprite：将背景图片合并成一个文件</p>
+<ul>
+<li><a href="http://www.spritecow.com/" target="_blank" rel="noopener">Spiritsbox</a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>未来的趋势是使用内嵌 SVG(暂时还未使用过)。</p>
+</blockquote>
+<h3 id="1-2-减少-DNS-查询"><a href="#1-2-减少-DNS-查询" class="headerlink" title="1.2 减少 DNS 查询"></a>1.2 减少 DNS 查询</h3><p>用户输入 URL 以后，浏览器首先要查询域名（hostname）对应服务器的 IP 地址，一般需要耗费 20-120 毫秒 时间。DNS 查询完成之前，浏览器无法从服务器下载任何数据。</p>
+<p>首次访问、没有相应的 DNS 缓存时，域名越多，查询时间越长。所以应尽量减少域名数量。但基于并行下载考虑，把资源分布到 2 个域名上（最多不超过 4 个）。这是减少 DNS 查询同时保证并行下载的折衷方案。</p>
+<h3 id="1-3-延迟加载"><a href="#1-3-延迟加载" class="headerlink" title="1.3 延迟加载"></a>1.3 延迟加载</h3><p>页面初始加载时哪些内容是绝对必需的？不在答案之列的资源都可以延迟加载。比如：</p>
+<ul>
+<li>非首屏使用的数据、样式、脚本、图片等；</li>
+<li>用户交互时才会显示的内容。</li>
+</ul>
+<p>遵循「渐进增强」理念开发的网站：JavaScript 用于增强用用户体验，但没有（不支持） JavaScript 也能正常工作，完全可以延迟加载 JavaScript。</p>
+<h3 id="1-4-预先加载"><a href="#1-4-预先加载" class="headerlink" title="1.4 预先加载"></a>1.4 预先加载</h3><p>预先加载利用浏览器空闲时间请求将来要使用的资源，以便用户访问下一页面时更快地响应。</p>
+<ul>
+<li><strong>无条件预先加载</strong>：页面加载完成（load）后，马上获取其他资源。以 google.com 为例，首页加载完成后会立即下载一个 Sprite 图片，此图首页不需要，但是搜索结果页要用到。</li>
+<li><strong>有条件预先加载</strong>：根据用户行为预判用户去向，预载相关资源。比如 search.yahoo.com 开始输入时会有额外的资源加载。</li>
+<li><strong>有「阴谋」的预先加载</strong>：页面即将上线新版前预先加载新版内容。网站改版后由于缓存、使用习惯等原因，会有旧版的网站更快更流畅的反馈。 为缓解这一问题，在新版上线之前，旧版可以利用空闲提前加载一些新版的资源缓存到客户端，以便新版正式上线后更快的载入。</li>
+</ul>
+<blockquote>
+<p>「双十一」这类促销日来临之前，也可以预先下载一些相关资源到客户端（浏览器、App 等），有效利用浏览器缓存和本地存储，降低活动当日请求压力，提高用户体验。</p>
+</blockquote>
+<h3 id="1-5-减少-DOM-元素数量"><a href="#1-5-减少-DOM-元素数量" class="headerlink" title="1.5 减少 DOM 元素数量"></a>1.5 减少 DOM 元素数量</h3><p>从以下几个角度考虑移除不必要的标记：</p>
+<ul>
+<li>是否还在使用表格布局？</li>
+<li>塞进去更多的<div>仅为了处理布局问题？也许有更好、更语义化的标记。</div></li>
+<li>能通过伪元素实现的功能，就没必要添加额外元素，如清除浮动。</li>
+</ul>
+<p>浏览器控制台中输入以下代码可以计算出页面中有多少 DOM 元素：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementsByTagName(<span class="string">'*'</span>).length;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>为什么不使用表格布局？</p>
+</blockquote>
+<ul>
+<li>更多的标签，增加文件大小；</li>
+<li>不易维护，无法适应响应式设计；</li>
+<li>性能考量，默认的表格布局算法会产生大量重绘</li>
+</ul>
+<h3 id="1-6-划分内容到不同域名"><a href="#1-6-划分内容到不同域名" class="headerlink" title="1.6 划分内容到不同域名"></a>1.6 划分内容到不同域名</h3><p>浏览器一般会限制每个域的并行线程（一般为 6 个，甚至更少），使用不同的域名可以最大化下载线程，但注意保持在 2-4 个域名内，以避免 DNS 查询损耗。</p>
+<p>例如，动态内容放在csspod.com上，静态资源放在static.csspod.com上。这样还可以禁用静态资源域下的 Cookie，减少数据传输，静态资源一般无需使用 Cookie，可以把它们放在使用二级域名或者专门域名的无 Cookie 服务器上，降低 Cookie 传送的造成的流量浪费，提高响应速度。</p>
+<h3 id="1-7-尽量减少-iframe-使用"><a href="#1-7-尽量减少-iframe-使用" class="headerlink" title="1.7 尽量减少 iframe 使用"></a>1.7 尽量减少 iframe 使用</h3><p><strong>iframe优点</strong>：</p>
+<ul>
+<li>可以用来加载速度较慢的第三方资源，如广告、徽章；</li>
+<li>可以并行下载脚本。</li>
+</ul>
+<p><strong>iframe缺点</strong>：</p>
+<ul>
+<li>加载代价昂贵，即使是空的页面；</li>
+<li>阻塞页面load事件触发；</li>
+</ul>
+<blockquote>
+<p>Iframe 完全加载以后，父页面才会触发load事件。Safari、Chrome 中通过 JavaScript 动态设置iframe src可以避免这个问题。</p>
+</blockquote>
+<ul>
+<li>缺乏语义；</li>
+</ul>
+<h3 id="1-8-避免-404-错误"><a href="#1-8-避免-404-错误" class="headerlink" title="1.8 避免 404 错误"></a>1.8 避免 404 错误</h3><p>返回无效的响应（如 404 未找到）完全没必要，降低用户体验而且毫无益处。</p>
+<p>一些网站设计有提示信息的 404 页面，有助于提高用户体验，但还是浪费服务器资源。尤其糟糕的是外部脚本返回 404，不仅阻塞其他资源下载，浏览器还会尝试把 404 页面内容当作 JavaScript 解析，消耗更多资源。</p>
+<h3 id="1-9-定义字符集"><a href="#1-9-定义字符集" class="headerlink" title="1.9 定义字符集"></a>1.9 定义字符集</h3><p>放在head顶部。大多数浏览器会暂停页面渲染，直到找到字符集定义。</p>
+<h2 id="2-服务器"><a href="#2-服务器" class="headerlink" title="2.服务器"></a>2.服务器</h2><h3 id="1-使用CDN"><a href="#1-使用CDN" class="headerlink" title="1.使用CDN"></a>1.使用CDN</h3><p>减少资源下载时间是性能优化的黄金法则。</p>
+<h3 id="2-Ajax-请求使用-GET-方法"><a href="#2-Ajax-请求使用-GET-方法" class="headerlink" title="2.Ajax 请求使用 GET 方法"></a>2.Ajax 请求使用 GET 方法</h3><p>浏览器执行 XMLHttpRequest POST 请求时分成两步，先发送 Header，再发送数据。而 GET 只使用一个 TCP 数据包发送数据，所以首选GET方法。</p>
+<p>根据 HTTP 规范，GET 用于获取数据，POST 则用于向服务器发送数据，所以 Ajax 请求数据时使用 GET 更符合规范（GET 和 POST 对比）。</p>
+<p>IE 中最大 URL 长度为 2K，如果超出 2K，则需要考虑使用POST方法。</p>
+<h3 id="3-避免图片-src-为空"><a href="#3-避免图片-src-为空" class="headerlink" title="3.避免图片 src 为空"></a>3.避免图片 src 为空</h3><p>图片src属性值为空字符串可能以下面两种形式出现：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* HTML */</span></span><br><span class="line">&lt;img src=<span class="string">""</span> /&gt;</span><br><span class="line"><span class="comment">/* JavaScript */</span></span><br><span class="line"><span class="keyword">var</span> img = <span class="keyword">new</span> Image();  </span><br><span class="line">img.src = <span class="string">""</span>;</span><br></pre></td></tr></table></figure></p>
+<p>虽然src属性为空字符串，但浏览器仍然会向服务器发起一个 HTTP 请求，空src产生请求的后果：</p>
+<ul>
+<li>给服务器造成意外的流量负担；</li>
+<li>浪费服务器计算资源；</li>
+<li>可能产生报错；</li>
+</ul>
+<h2 id="3-Cookie"><a href="#3-Cookie" class="headerlink" title="3.Cookie"></a>3.Cookie</h2><h3 id="1-减少Cookie大小"><a href="#1-减少Cookie大小" class="headerlink" title="1.减少Cookie大小"></a>1.减少Cookie大小</h3><p>Cookie 被用于身份认证、个性化设置等诸多用途。Cookie 通过 HTTP 头在服务器和浏览器间来回传送，减少 Cookie 大小可以降低其对响应速度的影响。</p>
+<ul>
+<li>去除不必要的 Cookie；</li>
+<li>尽量压缩 Cookie 大小；</li>
+<li>设置合适的过期时间。</li>
+</ul>
+<h2 id="4-CSS"><a href="#4-CSS" class="headerlink" title="4.CSS"></a>4.CSS</h2><h3 id="4-1-把样式表放在中"><a href="#4-1-把样式表放在中" class="headerlink" title="4.1 把样式表放在中"></a>4.1 把样式表放在<head>中</head></h3><p>样式表放在head中可以让页面渐进渲染，尽早呈现视觉反馈，给用户加载速度很快的感觉。</p>
+<p>这对内容比较多的页面尤为重要，用户可以先查看已经下载渲染的内容，而不是盯着白屏等待。</p>
+<h3 id="4-2-不要使用-CSS-表达式"><a href="#4-2-不要使用-CSS-表达式" class="headerlink" title="4.2 不要使用 CSS 表达式"></a>4.2 不要使用 CSS 表达式</h3><p>CSS 表达式可以在 CSS 里执行 JavaScript，仅 IE5-IE7 支持，IE8 标准模式已经废弃。</p>
+<p>CSS 表达式超出预期的频繁执行，页面滚动、鼠标移动时都会不断执行，带来很大的性能损耗。</p>
+<h3 id="4-3-使用替代-import"><a href="#4-3-使用替代-import" class="headerlink" title="4.3 使用替代@import"></a>4.3 使用<link>替代@import</h3><p>对于 IE 某些版本，@import的行为和 link 放在页面底部一样。</p>
+<h2 id="5-JavaScript"><a href="#5-JavaScript" class="headerlink" title="5.JavaScript"></a>5.JavaScript</h2><h3 id="5-1-把脚本放在页面底部"><a href="#5-1-把脚本放在页面底部" class="headerlink" title="5.1 把脚本放在页面底部"></a>5.1 把脚本放在页面底部</h3><p>浏览器下载脚本时，会阻塞其他资源并行下载，即使是来自不同域名的资源。因此，最好将脚本放在底部，以提高页面加载速度。</p>
+<p>一些特殊场景无法将脚本放到页面底部的，可以考虑 script 的以下属性：</p>
+<ul>
+<li>defer属性；</li>
+<li>HTML5 新增的 async属性；</li>
+</ul>
+<h3 id="5-2-使用外部-JavaScript-和-CSS"><a href="#5-2-使用外部-JavaScript-和-CSS" class="headerlink" title="5.2 使用外部 JavaScript 和 CSS"></a>5.2 使用外部 JavaScript 和 CSS</h3><p>外部 JavaScript 和 CSS 文件可以被浏览器缓存，在不同页面间重用，也能降低页面大小。另外，可以在首页加载完成以后，预先加载子页面的资源。</p>
+<h3 id="5-3-压缩-JavaScript-和-CSS"><a href="#5-3-压缩-JavaScript-和-CSS" class="headerlink" title="5.3 压缩 JavaScript 和 CSS"></a>5.3 压缩 JavaScript 和 CSS</h3><p>压缩代码可以移除非功能性的字符（注释、空格、空行等），减少文件大小，提高载入速度。</p>
+<h3 id="5-4-减少-DOM-操作"><a href="#5-4-减少-DOM-操作" class="headerlink" title="5.4 减少 DOM 操作"></a>5.4 减少 DOM 操作</h3><p>JavaScript 操作 DOM 很慢，尤其是 DOM 节点很多时。<br>使用时应该注意：</p>
+<ul>
+<li>操作 className，而不是多次读写style；</li>
+<li>避免使用 JavaScript 修复布局。</li>
+</ul>
+<h3 id="5-5-使用高效的事件处理"><a href="#5-5-使用高效的事件处理" class="headerlink" title="5.5 使用高效的事件处理"></a>5.5 使用高效的事件处理</h3><ul>
+<li>减少绑定事件监听的节点，如通过事件委托；</li>
+<li>尽早处理事件，在DOMContentLoaded即可进行，不用等到load以后。</li>
+</ul>
+<blockquote>
+<p>对于resize、scroll等触发频率极高的事件，应该通过 debounce 等机制降低处理程序执行频率。</p>
+</blockquote>
+<h2 id="6-图片"><a href="#6-图片" class="headerlink" title="6. 图片"></a>6. 图片</h2><h3 id="6-1-优化-CSS-Sprite"><a href="#6-1-优化-CSS-Sprite" class="headerlink" title="6.1 优化 CSS Sprite"></a>6.1 优化 CSS Sprite</h3><ul>
+<li>水平排列 Sprite 中的图片，垂直排列会增加图片大小；</li>
+<li>Spirite 中把颜色较近的组合在一起可以降低颜色数，理想状况是低于 256 色以适用 PNG8 格式；</li>
+<li>不要在 Spirite 的图像中间留有较大空隙。减少空隙虽然不太影响文件大小，但可以降低用户代理把图片解压为像素图的内存消耗，对移动设备更友好。</li>
+</ul>
+<h3 id="6-2-不要在-HTML-中缩放图片"><a href="#6-2-不要在-HTML-中缩放图片" class="headerlink" title="6.2 不要在 HTML 中缩放图片"></a>6.2 不要在 HTML 中缩放图片</h3><p>不要使用HTML中的width、height缩放图片，如果用到小图片，就使用相应大小的图片。</p>
+<h3 id="6-2-图片相关补充"><a href="#6-2-图片相关补充" class="headerlink" title="6.2 图片相关补充"></a>6.2 图片相关补充</h3><p>设置图片的宽和高，以免浏览器按照「猜」的宽高给图片保留的区域和实际宽高差异，产生重绘。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/performance-optimization/" rel="tag"># performance optimization</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/17/深入理解学习webpack/" rel="next" title="深入理解学习webpack">
+                <i class="fa fa-chevron-left"></i> 深入理解学习webpack
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/21/从url到页面展现，这之中发生了什么？/" rel="prev" title="从url到页面展现，这之中发生了什么？">
+                从url到页面展现，这之中发生了什么？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Zoe" />
+            
+              <p class="site-author-name" itemprop="name">Zoe</p>
+              <p class="site-description motion-element" itemprop="description">心之所向，素履以往。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-页面内容"><span class="nav-number">1.</span> <span class="nav-text">1. 页面内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-减少HTTP请求数"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 减少HTTP请求数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-减少-DNS-查询"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 减少 DNS 查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-延迟加载"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-预先加载"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 预先加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-减少-DOM-元素数量"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 减少 DOM 元素数量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-划分内容到不同域名"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 划分内容到不同域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-尽量减少-iframe-使用"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 尽量减少 iframe 使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-避免-404-错误"><span class="nav-number">1.8.</span> <span class="nav-text">1.8 避免 404 错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-9-定义字符集"><span class="nav-number">1.9.</span> <span class="nav-text">1.9 定义字符集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-服务器"><span class="nav-number">2.</span> <span class="nav-text">2.服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用CDN"><span class="nav-number">2.1.</span> <span class="nav-text">1.使用CDN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Ajax-请求使用-GET-方法"><span class="nav-number">2.2.</span> <span class="nav-text">2.Ajax 请求使用 GET 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-避免图片-src-为空"><span class="nav-number">2.3.</span> <span class="nav-text">3.避免图片 src 为空</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Cookie"><span class="nav-number">3.</span> <span class="nav-text">3.Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-减少Cookie大小"><span class="nav-number">3.1.</span> <span class="nav-text">1.减少Cookie大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-CSS"><span class="nav-number">4.</span> <span class="nav-text">4.CSS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-把样式表放在中"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 把样式表放在中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-不要使用-CSS-表达式"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 不要使用 CSS 表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-使用替代-import"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 使用替代@import</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-JavaScript"><span class="nav-number">5.</span> <span class="nav-text">5.JavaScript</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-把脚本放在页面底部"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 把脚本放在页面底部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-使用外部-JavaScript-和-CSS"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 使用外部 JavaScript 和 CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-压缩-JavaScript-和-CSS"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 压缩 JavaScript 和 CSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-减少-DOM-操作"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 减少 DOM 操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-使用高效的事件处理"><span class="nav-number">5.5.</span> <span class="nav-text">5.5 使用高效的事件处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-图片"><span class="nav-number">6.</span> <span class="nav-text">6. 图片</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-优化-CSS-Sprite"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 优化 CSS Sprite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-不要在-HTML-中缩放图片"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 不要在 HTML 中缩放图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-图片相关补充"><span class="nav-number">6.3.</span> <span class="nav-text">6.2 图片相关补充</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zoe</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
