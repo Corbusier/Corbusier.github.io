@@ -108,27 +108,27 @@
 
 
 
-  <meta name="description" content="在浏览器的地址栏中输入url 域名解析 服务器处理请求 浏览器处理 绘制网页">
+  <meta name="description" content="缓存的类型1.强缓存：不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码，并且size显示from disk cache或from memory cache； 2.协商缓存：向服务器发送请求，服务器会根据这个请求的request header的一些参数来判断是否命中协商缓存，如果命中，则返回304状态码并带上新的response">
 <meta name="keywords" content="tcp&#x2F;ip,网络协议相关">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从url到页面展现，这之中发生了什么？">
-<meta property="og:url" content="https://corbusier.github.io/2017/06/21/从url到页面展现，这之中发生了什么？/index.html">
+<meta property="og:title" content="浏览器缓存机制简略说明">
+<meta property="og:url" content="https://corbusier.github.io/2017/06/21/浏览器缓存机制简略说明/index.html">
 <meta property="og:site_name" content="Awesome_929">
-<meta property="og:description" content="在浏览器的地址栏中输入url 域名解析 服务器处理请求 浏览器处理 绘制网页">
+<meta property="og:description" content="缓存的类型1.强缓存：不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码，并且size显示from disk cache或from memory cache； 2.协商缓存：向服务器发送请求，服务器会根据这个请求的request header的一些参数来判断是否命中协商缓存，如果命中，则返回304状态码并带上新的response">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://corbusier.github.io/images/url.jpg">
-<meta property="og:updated_time" content="2017-06-21T11:57:58.000Z">
+<meta property="og:image" content="https://corbusier.github.io/images/moon.jpg">
+<meta property="og:updated_time" content="2017-06-21T11:59:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="从url到页面展现，这之中发生了什么？">
-<meta name="twitter:description" content="在浏览器的地址栏中输入url 域名解析 服务器处理请求 浏览器处理 绘制网页">
-<meta name="twitter:image" content="https://corbusier.github.io/images/url.jpg">
+<meta name="twitter:title" content="浏览器缓存机制简略说明">
+<meta name="twitter:description" content="缓存的类型1.强缓存：不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码，并且size显示from disk cache或from memory cache； 2.协商缓存：向服务器发送请求，服务器会根据这个请求的request header的一些参数来判断是否命中协商缓存，如果命中，则返回304状态码并带上新的response">
+<meta name="twitter:image" content="https://corbusier.github.io/images/moon.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="https://corbusier.github.io/2017/06/21/从url到页面展现，这之中发生了什么？/"/>
+  <link rel="canonical" href="https://corbusier.github.io/2017/06/21/浏览器缓存机制简略说明/"/>
 
 
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title>从url到页面展现，这之中发生了什么？ | Awesome_929</title>
+  <title>浏览器缓存机制简略说明 | Awesome_929</title>
   
 
 
@@ -294,12 +294,12 @@
 
   
 
-  <article class="post post-type-tags" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://corbusier.github.io/2017/06/21/从url到页面展现，这之中发生了什么？/">
+    <link itemprop="mainEntityOfPage" href="https://corbusier.github.io/2017/06/21/浏览器缓存机制简略说明/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zoe">
@@ -316,7 +316,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">从url到页面展现，这之中发生了什么？
+          <h2 class="post-title" itemprop="name headline">浏览器缓存机制简略说明
               
             
           </h2>
@@ -341,7 +341,7 @@
                 
               
 
-              <time title="Created: 2017-06-21 19:57:58" itemprop="dateCreated datePublished" datetime="2017-06-21T19:57:58+08:00">2017-06-21</time>
+              <time title="Created: 2017-06-21 19:59:00" itemprop="dateCreated datePublished" datetime="2017-06-21T19:59:00+08:00">2017-06-21</time>
             
 
             
@@ -393,91 +393,18 @@
       
 
       
-        <p><img src="/images/url.jpg" alt="输入url到页面呈现" align="center" width="640px" height="280px"></p>
-<ul>
-<li>在浏览器的地址栏中输入url<ul>
-<li>域名解析</li>
-<li>服务器处理请求</li>
-<li>浏览器处理</li>
-<li>绘制网页</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<h2 id="1-在浏览器的地址栏中输入url"><a href="#1-在浏览器的地址栏中输入url" class="headerlink" title="1. 在浏览器的地址栏中输入url"></a>1. 在浏览器的地址栏中输入url</h2><h3 id="what’s-URL"><a href="#what’s-URL" class="headerlink" title="what’s URL?"></a>what’s URL?</h3><p> URL（Uniform Resource Locator），统一资源定位符。定位互联网上的资源，实际上就是网站网址。url的格式一般为：<br> <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">协议类型:<span class="comment">//&lt;主机名&gt;:&lt;端口&gt;/&lt;路径&gt;/文件名</span></span><br></pre></td></tr></table></figure></p>
-<p>协议的类型可以是http(超文本传输协议)、https、ftp(文件传输协议)、telnet(远程登录协议)、file等等。http是最常见的网络传输协议，https则是进行加密的网络传输。</p>
-<p>比如<code>https://github.com/Corbusier/Article</code>，”https”表示与web服务器通讯采用https协议，gitHub服务器域名为<code>github.com</code>， <code>Corbusier/Article</code> 表示所访问的文件存在于web服务器上的路径。</p>
-<p>url格式中主机名冒号后面的数字是端口编号，因为一台计算机常常会同时作为Web，FTP等服务器，端口编号用来告诉web服务器所在的主机要将请求交给哪个服务。默认情况下http服务的端口为80，不需要在url中输入，如果web服务器采用的不是这一个默认端口，就需要写明服务所用的端口。常见的协议默认端口如下：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">协议类型</th>
-<th style="text-align:center">默认端口</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">http</td>
-<td style="text-align:center">80</td>
-</tr>
-<tr>
-<td style="text-align:center">ftp</td>
-<td style="text-align:center">21</td>
-</tr>
-<tr>
-<td style="text-align:center">https</td>
-<td style="text-align:center">443</td>
-</tr>
-<tr>
-<td style="text-align:center">telnet</td>
-<td style="text-align:center">23</td>
-</tr>
-</tbody>
-</table>
-<h3 id="what’s-IP"><a href="#what’s-IP" class="headerlink" title="what’s IP?"></a>what’s IP?</h3><p>IP是每台连接到网络的计算机之间相互通信遵循的协议。每一个处于互联网的设备都有IP地址，形如 192.168.0.1。IP又分为局域网IP和公网IP。而局域网 IP 和公网 IP 是有差别的。每个网站就是靠IP来定位的。</p>
-<p>为了便于记忆或辨识，人们使用域名来登录网站，每个域名后都有对应的IP网址。</p>
-<h2 id="2-域名解析"><a href="#2-域名解析" class="headerlink" title="2. 域名解析"></a>2. 域名解析</h2><p>当用户输入URL后，首先会查找浏览器缓存。</p>
-<blockquote>
-<p>浏览器会检查缓存中有没有这个域名对应的解析过的IP地址，如果缓存中有，这个解析过程就将结束。Chrome浏览器查看本地的DNS缓存比较方便，在地址栏输入chrome://net-internals/#dns</p>
-</blockquote>
-<p>然后是操作系统缓存</p>
-<blockquote>
-<p>如果用户的浏览器缓存中没有，浏览器会从hosts文件查找是否有存储DNS信息，查找是否有目标域名和对应的IP地址</p>
-</blockquote>
-<p>查找路由器缓存</p>
-<blockquote>
-<p>如果系统缓存中也找不到，那么查询请求就会发向路由器，路由器一般会有自己的DNS缓存。</p>
-</blockquote>
-<p>查找ISP DNS 缓存</p>
-<blockquote>
-<p>如果路由器缓存中也找不到，那么就查询 ISP DNS 缓存服务器了。<br>网络配置中会有”DNS服务器地址”这一项，操作系统会把这个域名发送给这里设置的DNS，比如114.114.114.114，也就是本地区的域名服务器，通常是提供给你接入互联网的应用提供商。而114.114.114.114是国内移动、电信和联通通用的DNS。</p>
-</blockquote>
-<p>递归查找</p>
-<p>如果以上几步都找不到缓存的话，会进行如下的步骤：</p>
-<blockquote>
-</blockquote>
-<ul>
-<li>本地 DNS 服务器将该请求转发到互联网上的根域（根域没有名字，在DNS系统中就用一个空字符串来表示。例如<a href="http://www.baidu.com.现在的DNS系统都不会要求域名以.来结束，即www.baidu.com就可以解析了，但是现在很多DNS解析服务商还是会要求在填写DNS记录的时候以.来结尾域名。）" target="_blank" rel="noopener">www.baidu.com.现在的DNS系统都不会要求域名以.来结束，即www.baidu.com就可以解析了，但是现在很多DNS解析服务商还是会要求在填写DNS记录的时候以.来结尾域名。）</a></li>
-<li>根域将所要查询域名中的顶级域（比如要查询<a href="http://www.baidu.com，该域名的顶级域就是com）的服务器IP地址返回到本地DNS。" target="_blank" rel="noopener">www.baidu.com，该域名的顶级域就是com）的服务器IP地址返回到本地DNS。</a></li>
-<li>本地DNS根据返回的IP地址，再向顶级域（就是com域）发送请求， com域服务器再将域名中的二级域（即<a href="http://www.baidu.com中的baidu.com）的IP地址返回给本地DNS。" target="_blank" rel="noopener">www.baidu.com中的baidu.com）的IP地址返回给本地DNS。</a></li>
-<li>本地DNS再向二级域发送请求进行查询。</li>
-<li>之后不断重复这样的过程，直到本地DNS服务器得到最终的查询结果，并返回到主机。这时候主机才能通过域名访问该网站。</li>
-</ul>
-<p>当查找到对应的IP地址之后，通过IP地址查找到对应的服务器，浏览器将用户发起的http请求发送给服务器。例如：GET <a href="http://www.baidu.com/" target="_blank" rel="noopener">http://www.baidu.com/</a> HTTP/1.1</p>
-<h2 id="3-服务器处理请求"><a href="#3-服务器处理请求" class="headerlink" title="3. 服务器处理请求"></a>3. 服务器处理请求</h2><p>每台服务器上都会安装处理请求的应用——Web server。常见的web server产品有apache、nginx、IIS、Lighttpd等。</p>
-<p>当web server接收到一个HTTP请求(request)，会返回一个HTTP响应(response)，例如送回一个HTML页面。对于不同用户发送的请求，会结合配置文件，把不同请求委托给服务器上处理对应请求的程序进行处理（例如CGI脚本，JSP脚本，servlets，ASP脚本，服务器端JavaScript，或者一些其它的服务器端技术等）。</p>
-<p>那么如何处理请求？实际上就是后台处理的工作。后台开发现在有很多框架，但大部分都还是按照MVC设计模式进行搭建的。</p>
-<p>MVC的处理过程(自己的理解)：</p>
-<blockquote>
-<p>当用户输入一个请求时，先被控制器接收，然后决定采用哪种模型处理，然后使用业务逻辑处理请求后返回数据，最后呈现给用户的，是控制器使用视图模型返回给浏览器html字符串渲染得到的结果。</p>
-</blockquote>
-<h2 id="4-浏览器处理"><a href="#4-浏览器处理" class="headerlink" title="4. 浏览器处理"></a>4. 浏览器处理</h2><p>上一步处理交给浏览器的字符串被进一步解析处理，经历加载、解析、渲染。</p>
-<ol>
-<li>加载<br>浏览器加载顺序是自上而下流式加载。加载到JS文件时，html文档会被挂起渲染线程，不仅要等到JS文件加载完毕，还要解析执行完成后才可继续渲染进程。</li>
-<li>解析<br>将代码解析为语法树，即DOM树，解析文档将其变为有意义的结构。<br>CSS解析时将CSS文件解析为样式表对象。<br>JS解析是在文件加载同时进行解析。</li>
-<li>渲染<br>即MVC的V层(viw)，将DOM进行可视化，按照正确的顺序绘制文档内容。</li>
-</ol>
-<h2 id="5-绘制网页"><a href="#5-绘制网页" class="headerlink" title="5.绘制网页"></a>5.绘制网页</h2><p>浏览器根据 HTML 和 CSS 计算得到渲染树，最终绘制到屏幕上。</p>
+        <p><img src="/images/moon.jpg" alt="performance2" align="center" width="640px" height="280px"></p>
+<h2 id="缓存的类型"><a href="#缓存的类型" class="headerlink" title="缓存的类型"></a>缓存的类型</h2><p>1.强缓存：不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码，并且size显示from disk cache或from memory cache；</p>
+<p>2.协商缓存：向服务器发送请求，服务器会根据这个请求的request header的一些参数来判断是否命中协商缓存，如果命中，则返回304状态码并带上新的response header通知浏览器从缓存中读取资源；<br><a id="more"></a><br>3.两者的共同点是，都是从客户端缓存中读取资源；区别是强缓存不会发请求，协商缓存会发请求</p>
+<h2 id="缓存有关的header"><a href="#缓存有关的header" class="headerlink" title="缓存有关的header"></a>缓存有关的header</h2><h3 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h3><h4 id="expires和cache-control"><a href="#expires和cache-control" class="headerlink" title="expires和cache-control"></a>expires和cache-control</h4><p>Expires：response header里的过期时间，浏览器再次加载资源时，如果在这个过期时间内，则命中强缓存。<br>Cache-Control：当值设为max-age=300时，则代表在这个请求正确返回时间（浏览器也会记录下来）的5分钟内再次加载资源，就会命中强缓存。</p>
+<p>Expires和Cache-Control:max-age=*** 的作用是差不多的，区别就在于 Expires 是http1.0的产物，Cache-Control是http1.1的产物，两者同时存在的话，Cache-Control优先级高于Expires；在某些不支持HTTP1.1的环境下，Expires就会发挥用处。所以Expires其实是过时的产物，现阶段它的存在只是一种兼容性的写法</p>
+<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><h4 id="ETag和If-None-Match"><a href="#ETag和If-None-Match" class="headerlink" title="ETag和If-None-Match"></a>ETag和If-None-Match</h4><p>Etag是上一次加载资源时，服务器返回的response header，是对该资源的一种唯一标识，只要资源有变化，Etag就会重新生成。浏览器在下一次加载资源向服务器发送请求时，会将上一次返回的Etag值放到request header里的If-None-Match里，服务器接受到If-None-Match的值后，会拿来跟该资源文件的Etag值做比较，如果相同，则表示资源文件没有发生改变，命中协商缓存。</p>
+<h4 id="Last-Modified和If-Modified-Since"><a href="#Last-Modified和If-Modified-Since" class="headerlink" title="Last-Modified和If-Modified-Since"></a>Last-Modified和If-Modified-Since</h4><p>Last-Modified是该资源文件最后一次更改时间，服务器会在response header里返回，同时浏览器会将这个值保存起来，在下一次发送请求时，放到request header里的If-Modified-Since里，服务器在接收到后也会做比对，如果相同则命中协商缓存。</p>
+<h3 id="ETag和Last-Modified的区别"><a href="#ETag和Last-Modified的区别" class="headerlink" title="ETag和Last-Modified的区别"></a>ETag和Last-Modified的区别</h3><p>首先在精确度上，Etag要优于Last-Modified。Last-Modified的时间单位是秒，如果某个文件在1秒内改变了多次，那么他们的Last-Modified其实并没有体现出来修改，但是Etag每次都会改变确保了精度；如果是负载均衡的服务器，各个服务器生成的Last-Modified也有可能不一致。<br>第二在性能上，Etag要逊于Last-Modified，毕竟Last-Modified只需要记录时间，而Etag需要服务器通过算法来计算出一个hash值。<br>第三在优先级上，服务器校验优先考虑Etag。</p>
+<h2 id="浏览器缓存过程"><a href="#浏览器缓存过程" class="headerlink" title="浏览器缓存过程"></a>浏览器缓存过程</h2><p>浏览器第一次加载资源，服务器返回200，浏览器将资源文件从服务器上请求下载下来，并把response header及该请求的返回时间一并缓存；</p>
+<p>下一次加载资源时，先比较当前时间和上一次返回200时的时间差，如果没有超过cache-control设置的max-age，则没有过期，命中强缓存，不发请求直接从本地缓存读取该文件（如果浏览器不支持HTTP1.1，则用expires判断是否过期）；如果时间过期，则向服务器发送header带有If-None-Match和If-Modified-Since 的请求；</p>
+<p>服务器收到请求后，优先根据Etag的值判断被请求的文件有没有做修改，Etag值一致则没有修改，命中协商缓存，返回304；如果不一致则有改动，直接返回新的资源文件带上新的Etag值并返回 200；<br>如果服务器收到的请求没有Etag值，则将If-Modified-Since和被请求文件的最后修改时间做比对，一致则命中协商缓存，返回304；不一致则返回新的last-modified和文件并返回 200；</p>
+<h2 id="用户行为对浏览器缓存的控制"><a href="#用户行为对浏览器缓存的控制" class="headerlink" title="用户行为对浏览器缓存的控制"></a>用户行为对浏览器缓存的控制</h2><p>地址栏访问，链接跳转是正常用户行为，将会触发浏览器缓存机制；<br>F5刷新，浏览器会设置max-age=0，跳过强缓存判断，会进行协商缓存判断；<br>ctrl+F5刷新，跳过强缓存和协商缓存，直接从服务器拉取资源。</p>
 
       
     </div>
@@ -513,8 +440,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/15/快速了解Require.JS/" rel="next" title="快速了解Require.JS">
-                <i class="fa fa-chevron-left"></i> 快速了解Require.JS
+              <a href="/2017/06/21/从url到页面展现，这之中发生了什么？/" rel="next" title="从url到页面展现，这之中发生了什么？">
+                <i class="fa fa-chevron-left"></i> 从url到页面展现，这之中发生了什么？
               </a>
             
           </div>
@@ -523,8 +450,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/21/浏览器缓存机制简略说明/" rel="prev" title="浏览器缓存机制简略说明">
-                浏览器缓存机制简略说明 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/10/加密test/" rel="prev" title="Hexo文章简单加密访问">
+                Hexo文章简单加密访问 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -683,7 +610,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在浏览器的地址栏中输入url"><span class="nav-number">1.</span> <span class="nav-text">1. 在浏览器的地址栏中输入url</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#what’s-URL"><span class="nav-number">1.1.</span> <span class="nav-text">what’s URL?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#what’s-IP"><span class="nav-number">1.2.</span> <span class="nav-text">what’s IP?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-域名解析"><span class="nav-number">2.</span> <span class="nav-text">2. 域名解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-服务器处理请求"><span class="nav-number">3.</span> <span class="nav-text">3. 服务器处理请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-浏览器处理"><span class="nav-number">4.</span> <span class="nav-text">4. 浏览器处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-绘制网页"><span class="nav-number">5.</span> <span class="nav-text">5.绘制网页</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存的类型"><span class="nav-number">1.</span> <span class="nav-text">缓存的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存有关的header"><span class="nav-number">2.</span> <span class="nav-text">缓存有关的header</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#强缓存"><span class="nav-number">2.1.</span> <span class="nav-text">强缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#expires和cache-control"><span class="nav-number">2.1.1.</span> <span class="nav-text">expires和cache-control</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协商缓存"><span class="nav-number">2.2.</span> <span class="nav-text">协商缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ETag和If-None-Match"><span class="nav-number">2.2.1.</span> <span class="nav-text">ETag和If-None-Match</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Last-Modified和If-Modified-Since"><span class="nav-number">2.2.2.</span> <span class="nav-text">Last-Modified和If-Modified-Since</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ETag和Last-Modified的区别"><span class="nav-number">2.3.</span> <span class="nav-text">ETag和Last-Modified的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器缓存过程"><span class="nav-number">3.</span> <span class="nav-text">浏览器缓存过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户行为对浏览器缓存的控制"><span class="nav-number">4.</span> <span class="nav-text">用户行为对浏览器缓存的控制</span></a></li></ol></div>
             
 
           </div>

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="R.J的主要功能是按不同的先后依赖关系,异步加载JS文件,适合在浏览器中使用,可以确保依赖的JS文件加载完成之后再加载当前的文件,核心的思想是AMD。只做一件事：模块化。而模块化的作用就是避免全局变量污染,命名冲突的问题,它可以作为一种命名空间使用。">
+<meta name="keywords" content="AMD模块化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速了解Require.JS">
+<meta property="og:url" content="https://corbusier.github.io/2017/06/15/快速了解Require.JS/index.html">
+<meta property="og:site_name" content="Awesome_929">
+<meta property="og:description" content="R.J的主要功能是按不同的先后依赖关系,异步加载JS文件,适合在浏览器中使用,可以确保依赖的JS文件加载完成之后再加载当前的文件,核心的思想是AMD。只做一件事：模块化。而模块化的作用就是避免全局变量污染,命名冲突的问题,它可以作为一种命名空间使用。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://corbusier.github.io/images/RequireJS.jpg">
+<meta property="og:updated_time" content="2017-06-15T05:03:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="快速了解Require.JS">
+<meta name="twitter:description" content="R.J的主要功能是按不同的先后依赖关系,异步加载JS文件,适合在浏览器中使用,可以确保依赖的JS文件加载完成之后再加载当前的文件,核心的思想是AMD。只做一件事：模块化。而模块化的作用就是避免全局变量污染,命名冲突的问题,它可以作为一种命名空间使用。">
+<meta name="twitter:image" content="https://corbusier.github.io/images/RequireJS.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://corbusier.github.io/2017/06/15/快速了解Require.JS/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>快速了解Require.JS | Awesome_929</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Awesome_929</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-about"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://corbusier.github.io/2017/06/15/快速了解Require.JS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zoe">
+      <meta itemprop="description" content="心之所向，素履以往。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Awesome_929">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">快速了解Require.JS
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-06-15 13:03:18" itemprop="dateCreated datePublished" datetime="2017-06-15T13:03:18+08:00">2017-06-15</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/模块化方案/" itemprop="url" rel="index"><span itemprop="name">模块化方案</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/RequireJS.jpg" alt="github+hexo" align="center" width="640px" height="280px"></p>
+<p>R.J的主要功能是按不同的先后依赖关系,异步加载JS文件,适合在浏览器中使用,可以确保依赖的JS文件加载完成之后再加载当前的文件,核心的思想是AMD。只做一件事：模块化。而模块化的作用就是避免全局变量污染,命名冲突的问题,它可以作为一种命名空间使用。<br><a id="more"></a></p>
+<p>RequireJS主要的功能：<br>1)引入需要使用的命名空间(顺便加个别名也行)；<br>2)将自己的代码放到命名空间中，避免全局污染。</p>
+<p>RequireJS 定义了(define)一个命名空间，在定义的时候，顺便引用了需要使用其他命名空间。按照 RequireJS 的术语，它把命名空间叫做“模块”。注意，在这里，RequireJS 定义的模块(命名空间)是匿名的，没有取名，这是和c#不同的地方。</p>
+<h2 id="定义模块的方式"><a href="#定义模块的方式" class="headerlink" title="定义模块的方式"></a>定义模块的方式</h2><p>假如新建另外一个awesome.test2.js文件来使用awesome.test1.js：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">define([&apos;awesome.test1&apos;],function(t1)&#123;</span><br><span class="line">    return&#123;</span><br><span class="line">        NewTest : function()&#123;</span><br><span class="line">            t1.MyTest();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>通过不加后缀的文件名,引入了awesome.test1的命名空间,并给它取了别名 t1,然后在代码中使用 t1.MyTest() 方法。按照AMD规范,所有的模块定义都必须放在都必须放在 return {} 对象中。你的代码都要写在 return 返回的 {} 对象里面。这样做显得臃肿难看？你可以重构一下，比如这样做：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">define([&apos;awesome.test1&apos;],function(t1)&#123;</span><br><span class="line">    function someFunc1() &#123;</span><br><span class="line">        // Your Code...</span><br><span class="line">    &#125;</span><br><span class="line">    function someFunc2() &#123;</span><br><span class="line">        // Your Code...</span><br><span class="line">    &#125;</span><br><span class="line">    //通过 return 方式，将需要公开的函数暴露出来，供其他 js 调用</span><br><span class="line">    //这一点正是契合了在这个模块中使用单例的公共接口,这样就可以访问私有变量和函数</span><br><span class="line">    return&#123;</span><br><span class="line">        NewTest : function()&#123;</span><br><span class="line">            t1.MyTest();</span><br><span class="line">        &#125;,</span><br><span class="line">        fun1 : someFunc1,</span><br><span class="line">        fun2 : someFunc2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>define函数的三个参数分别为：</p>
+<ol>
+<li>第一个参数是依赖的模块,可以是在path定义的公用模块,也可以是自定义的代码,不过自定义的代码需要注明引用路径,例如../js/util.js。</li>
+<li>第2个参数是自定义模块，传入的是一个匿名函数，函数参数顺序和模块顺序一一对应，最后return的对象或函数即为对外暴露的接口。</li>
+<li>第3个是模块加载报错的处理函数（一般可以省略）。</li>
+</ol>
+<p>这里的模块加载都是异步的,这一点和CMD(sea.js)不同。</p>
+<p>当然,如果你想使用这些功能,必须要在页面中引入 require.js 文件：</p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>使用require.js的方式是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script data-main=&quot;main.js&quot; src=&quot;js/require.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>main方法作为入口文件，上面这种写法，做了几件事情：</p>
+<ol>
+<li>加载了 require-jquery.js 文件。注意,官方提供了 RequireJS 和 jquery 的打包版本,推荐。</li>
+<li>在加载之后，加载入口文件 js/main.js,注意，main.js 写进去的时候,不需要后缀名。</li>
+</ol>
+<p>所有其他 js 模块文件，都可以写在 main.js 里面，通过 main.js 加载。</p>
+<p>require.js的入口文件main.js的配置是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    requirejs.config(&#123;</span><br><span class="line">        baseUrl: &quot;frame&quot;,//模块查找的根路径</span><br><span class="line">        paths: &#123;</span><br><span class="line">            &quot;zepto&quot;: &quot;js/zepto&quot;,</span><br><span class="line">            &quot;frozen&quot;: &quot;js/frozen&quot;,</span><br><span class="line">            &quot;underscore&quot;: &quot;js/underscore&quot;,</span><br><span class="line">            &quot;text&quot;: &quot;js/text&quot;,</span><br><span class="line">            &quot;css&quot;: &quot;js/css&quot;,</span><br><span class="line">            &quot;route&quot;: &quot;../js/route&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        shim: &#123;</span><br><span class="line">            &quot;zepto&quot;: &#123;</span><br><span class="line">                exports: &quot;$&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;underscore&quot;: &#123;</span><br><span class="line">                exports: &quot;_&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;frozen&quot;: &#123;</span><br><span class="line">                deps: [&quot;zepto&quot;]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">``` </span><br><span class="line">paths是预定义的一些模块,比如js/zepto定义为zepto模块。</span><br><span class="line"></span><br><span class="line">shim处理了导出名称和依赖关系。第1个zepto模块的全局变量名称为$（这个就好比 jquery.js我们叫做jquery，实际用的时候我们用$作为变量），第3个frozen模块表示当它被加载的时候，需要先加载zepto模块。</span><br><span class="line"></span><br><span class="line">## 加载依赖的js方式</span><br><span class="line">目前为止遇到了两个关键字,一个是define,它可以用来定义模块(命名空间),还有一个是require,可以直接加载其他的js。</span><br></pre></td></tr></table></figure></p>
+<pre><code>&lt;script&gt;
+    require( [&quot;some&quot; ] ); 
+&lt;/script&gt;
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">还有一种类似define的复杂用法：</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;script&gt;
+    require([&quot;aModule&quot;,&quot;bModule&quot;],function(){ 
+        myFunctionA(); //使用 aModule.js中的函数myFunctionA
+        myFunctionB(); //使用 bModule.js中的函数myFunctionB
+    }
+&lt;/script&gt;
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">总结一下,define是定义自己的模块的时候使用,可以顺便加载其他js；require 直截了当,供你加载用的,它就是一个加载方法,加载的时候,可以定义别名。</span><br><span class="line"></span><br><span class="line">## 实际例子</span><br><span class="line"></span><br><span class="line">这个例子的设计要求是 workjs01.js文件依赖 jQuery,workjs02.js 依赖 workjs01.js,只有等依赖文件加载完了,最后在页面打出提示信息。</span><br><span class="line"></span><br><span class="line">Click Me：</span><br><span class="line"></span><br><span class="line">[Tool-Instructions](/require.js/userExample01/index.html)</span><br><span class="line"></span><br><span class="line">## 使用r.js打包</span><br><span class="line">如果模块数很多,那么请求数就会大大增加,而require.js针对这个情况提出了解决方案,就是r.js。首先要下载r.js,然后把它放在项目的根目录下使用。还是以上一个实际例子为例</span><br><span class="line">&lt;pre&gt;</span><br><span class="line">.userExample01</span><br><span class="line">├── index.html      </span><br><span class="line">├── main.js(主文件)  </span><br><span class="line">├── main-built.js</span><br><span class="line">├── r.js          </span><br><span class="line">├── built.js             </span><br><span class="line">├── static</span><br><span class="line">   ├── scripts</span><br><span class="line">       ├── src</span><br><span class="line">            ├── lib</span><br><span class="line">                ├── jquery</span><br><span class="line">                  ├── jquery</span><br><span class="line">                ├── require</span><br><span class="line">                  ├── require</span><br><span class="line">            ├── work</span><br><span class="line">                ├── workjs01</span><br><span class="line">                ├── workjs02</span><br><span class="line">.</span><br><span class="line">&lt;/pre&gt;</span><br><span class="line">可以看到在根目录下多了r.js、built.js、main-built.js和built.js。r.js是用来压缩代码的,而main-built.js是压缩后的模块。具体使用方式：</span><br><span class="line">创建built.js,然后配置built文件,和main.js差别不大,只是多了name属性和out属性,out是在该目录下压缩后的输出文件,name指向的是require.js的入口文件即main.js,可以这样理解,从模块文件lib、work这一级需要返回三级才能到main.js所在的目录,所以：</span><br></pre></td></tr></table></figure>
+<pre><code>,name: &quot;../../../main&quot;
+,out:&quot;main-built.js&quot;
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">然后cmd进入该目录执行：</span><br></pre></td></tr></table></figure>
+<pre><code>node r.js -o built.js
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">就可以得到main-built了,在index.html中修改原本指向的main.js为man-built.js。打开控制台的network可以看到请求数比之前减少了,这在大型项目中使用可以大大减少请求。</span><br><span class="line"></span><br><span class="line">## 技巧</span><br><span class="line">### CDN</span><br><span class="line">如果要使用cdn上的代码,可以在配置文件上的paths属性中：</span><br></pre></td></tr></table></figure>
+<pre><code>&quot;zepto&quot;: [&apos;http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min&apos;,&quot;js/zepto&quot;]
+</code></pre><p><code>`</code><br>第一个是CDN,加载失败时从本地获取</p>
+<h3 id="package"><a href="#package" class="headerlink" title="package"></a>package</h3><p>模块再次组合封装</p>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>配上text插件即可把html文件当做模块引入。用处就是可以当做碎片页来处理,类似jquery中的load函数,不过好处就是这个html文件可以被缓存,而不是像jquery每load一次就发起一次ajax请求。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AMD模块化/" rel="tag"># AMD模块化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/21/从url到页面展现，这之中发生了什么？/" rel="prev" title="从url到页面展现，这之中发生了什么？">
+                从url到页面展现，这之中发生了什么？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Zoe" />
+            
+              <p class="site-author-name" itemprop="name">Zoe</p>
+              <p class="site-description motion-element" itemprop="description">心之所向，素履以往。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义模块的方式"><span class="nav-number">1.</span> <span class="nav-text">定义模块的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">2.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#package"><span class="nav-number">2.1.</span> <span class="nav-text">package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">2.2.</span> <span class="nav-text">插件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zoe</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
