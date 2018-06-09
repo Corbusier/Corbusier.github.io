@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1frkjrxd81ij30ka0aujrc.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1frkjrxd81ij30ka0aujrc.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/mw690/86883a42gw1f8t0dcjcxbj208c08c3yy.jpg">
-<meta property="og:updated_time" content="2018-06-09T02:01:05.151Z">
+<meta property="og:updated_time" content="2018-06-09T05:05:46.521Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入MVVM原理">
 <meta name="twitter:description" content="水平有限，暂时还只会用Vue。斗胆用MVVM原理分析一下Vue。">
@@ -243,16 +243,16 @@
         
           
           <li class="menu-item menu-item-about">
-    <a href="/about/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-about"></i> <br />About</a>
+    <a href="/diamond/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-diamond"></i> <br />About</a>
   </li>
         
         
         
           
           <li class="menu-item menu-item-archives">
-    <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />Archives</a>
+    <a href="/archive/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
   </li>
 
       
@@ -362,7 +362,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-06-09 10:01:05" itemprop="dateModified" datetime="2018-06-09T10:01:05+08:00">2018-06-09</time>
+                <time title="Modified: 2018-06-09 13:05:46" itemprop="dateModified" datetime="2018-06-09T13:05:46+08:00">2018-06-09</time>
               
             
           </span>
@@ -476,7 +476,7 @@
 <p>听上去很简单，let’s do it!</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;&#123;&#123;input&#125;&#125;&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;input v-model="input"&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">function Replace(frag) &#123;</span></span><br><span class="line"><span class="regexp">	Array.from(frag.childNodes).forEach(node =&gt; &#123;</span></span><br><span class="line"><span class="regexp">		/</span><span class="regexp">/...nodeType === 3 &amp;&amp; reg.test(text)</span></span><br><span class="line"><span class="regexp">		if(node.nodeType === 1) &#123;</span></span><br><span class="line"><span class="regexp">			let nodeArr = node.attributes</span></span><br><span class="line"><span class="regexp">			Array.from(nodeArr).forEach(attr =&gt; &#123;</span></span><br><span class="line"><span class="regexp">				let value = attr.value</span></span><br><span class="line"><span class="regexp">				let name  = attr.name</span></span><br><span class="line"><span class="regexp">				</span></span><br><span class="line"><span class="regexp">				if(name.includes('v-')) &#123;</span></span><br><span class="line"><span class="regexp">					/</span><span class="regexp">/ 数据初始化</span></span><br><span class="line"><span class="regexp">					node.value = vm[value]</span></span><br><span class="line"><span class="regexp">				&#125;</span></span><br><span class="line"><span class="regexp">				</span></span><br><span class="line"><span class="regexp">				/</span>** </span><br><span class="line">					绑定事件为MVVM中的data数据赋值</span><br><span class="line">					当设置MVVM实例的值时，调用set函数</span><br><span class="line">					再调用notify，通知订阅者的update更新函数</span><br><span class="line">					完成视图更新</span><br><span class="line">				**<span class="regexp">/</span></span><br><span class="line"><span class="regexp">				node.addEventListener('input', ev =&gt; &#123;</span></span><br><span class="line"><span class="regexp">					let newVal = ev.target.value</span></span><br><span class="line"><span class="regexp">					vm[value] = newVal</span></span><br><span class="line"><span class="regexp">				&#125;)</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">				/</span>** </span><br><span class="line">					将数据添加到订阅者中监听变化 </span><br><span class="line">				**<span class="regexp">/</span></span><br><span class="line"><span class="regexp">				new Watcher(vm, value, newVal =&gt; &#123;</span></span><br><span class="line"><span class="regexp">					node.value = newVal</span></span><br><span class="line"><span class="regexp">				&#125;)</span></span><br><span class="line"><span class="regexp">			&#125;)</span></span><br><span class="line"><span class="regexp">		&#125;</span></span><br><span class="line"><span class="regexp">	&#125;)</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
 <h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><p>到这里基本已经结束了，但是发现一个问题：当文档元素中有相邻的<code>moustache expression</code>时，后一个键值并不能被正确编译。例如：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;&#123;% raw %&#125;&#123;&#123;input&#125;&#125;&#123;% endraw %&#125; - &#123;% raw %&#125;&#123;&#123;div&#125;&#125;&#123;% endraw %&#125;&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;&#123;&#123;input&#125;&#125; - &#123;&#123;div&#125;&#125;&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
 <p>改写<code>Compile</code>中的<code>Replace</code>逻辑，主要是用了数组的迭代方法，将实例上的所有属性赋值：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Replace</span>(<span class="params">frag</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">Array</span>.from(frag.childNodes).forEach(<span class="function"><span class="params">node</span> =&gt;</span> &#123;</span><br><span class="line">		<span class="comment">// 省略...</span></span><br><span class="line">		<span class="keyword">if</span>(node.nodeType === <span class="number">3</span> &amp;&amp; reg.test(text)) &#123;</span><br><span class="line">			<span class="function"><span class="keyword">function</span> <span class="title">replaceText</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">				node.textContent = text.replace(<span class="function">(<span class="params">matched, value</span>) =&gt;</span> &#123;</span><br><span class="line">					<span class="keyword">new</span> Watcher(vm, value , replaceText)</span><br><span class="line">					<span class="keyword">return</span> value.split(<span class="string">'.'</span>).reduce(<span class="function">(<span class="params">val, key</span>)=&gt;</span>&#123;</span><br><span class="line">						val = val[key]</span><br><span class="line">					&#125;,vm)</span><br><span class="line">				&#125;)</span><br><span class="line">			&#125;</span><br><span class="line">			replaceText()</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>MVVM主要包含了：1). <code>Observer</code>利用<code>set</code>和<code>get</code>对数据进行劫持 2). <code>Compile</code>对指令的解析，视图更新回调函数的绑定 3). <code>Watcher</code>订阅数据的变化，当数据变化时，及时的调用其<code>update</code>方法，并触发<code>Compile</code>上的回调函数，及时更新视图，实现数据与视图的同步。</p>
@@ -597,7 +597,7 @@
               
                 <div class="site-state-item site-state-posts">
                 
-                  <a href="/archives/">
+                  <a href="/archive/">
                 
                     <span class="site-state-item-count">45</span>
                     <span class="site-state-item-name">posts</span>
@@ -816,18 +816,6 @@
 
 
   
-
-
-
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> v3.7.1</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
 
 
 
