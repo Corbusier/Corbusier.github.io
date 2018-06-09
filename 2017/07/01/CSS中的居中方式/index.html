@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="以下几种方法针对不同的浏览器,经过测试,从IE8及以下到IE9+、Safari都可以支持。 1.标准浏览器全兼容,内容水平居中">
+<meta name="keywords" content="HTML、CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS中的居中方式">
+<meta property="og:url" content="https://corbusier.github.io/2017/07/01/CSS中的居中方式/index.html">
+<meta property="og:site_name" content="Awesome_929">
+<meta property="og:description" content="以下几种方法针对不同的浏览器,经过测试,从IE8及以下到IE9+、Safari都可以支持。 1.标准浏览器全兼容,内容水平居中">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://corbusier.github.io/images/center.jpg">
+<meta property="og:updated_time" content="2017-07-01T14:58:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS中的居中方式">
+<meta name="twitter:description" content="以下几种方法针对不同的浏览器,经过测试,从IE8及以下到IE9+、Safari都可以支持。 1.标准浏览器全兼容,内容水平居中">
+<meta name="twitter:image" content="https://corbusier.github.io/images/center.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://corbusier.github.io/2017/07/01/CSS中的居中方式/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CSS中的居中方式 | Awesome_929</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Awesome_929</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-about"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://corbusier.github.io/2017/07/01/CSS中的居中方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zoe">
+      <meta itemprop="description" content="心之所向，素履以往。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Awesome_929">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">CSS中的居中方式
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-07-01 22:58:32" itemprop="dateCreated datePublished" datetime="2017-07-01T22:58:32+08:00">2017-07-01</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/HTML、CSS/" itemprop="url" rel="index"><span itemprop="name">HTML、CSS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/center.jpg" alt="doctype" align="center" width="640px" height="280px"></p>
+<p>以下几种方法针对不同的浏览器,经过测试,从IE8及以下到IE9+、Safari都可以支持。</p>
+<h2 id="1-标准浏览器全兼容-内容水平居中"><a href="#1-标准浏览器全兼容-内容水平居中" class="headerlink" title="1.标准浏览器全兼容,内容水平居中"></a>1.标准浏览器全兼容,内容水平居中</h2><a id="more"></a>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">   <span class="selector-class">.wraper</span>&#123;</span><br><span class="line">	<span class="attribute">float</span>:left;</span><br><span class="line">	<span class="attribute">position</span>:relative;</span><br><span class="line">	<span class="attribute">left</span>:<span class="number">50%</span>;</span><br><span class="line">	<span class="attribute">clear</span>:both;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.wraper</span> <span class="selector-tag">div</span>&#123;</span><br><span class="line">	<span class="attribute">border</span>:<span class="number">1px</span> solid palevioletred;</span><br><span class="line">	<span class="attribute">position</span>:relative;</span><br><span class="line">	<span class="attribute">left</span>:-<span class="number">50%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">   &lt;div class="wraper"&gt;</span><br><span class="line">	&lt;div&gt;瓜迪奥拉&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class="wraper"&gt;</span><br><span class="line">	&lt;div&gt;克洛普克洛普克洛普克洛普克洛普克洛普克洛普&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class="wraper"&gt;</span><br><span class="line">	&lt;div&gt;孔蒂&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class="wraper"&gt;</span><br><span class="line">	&lt;div&gt;穆里尼奥&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class="wraper"&gt;</span><br><span class="line">	&lt;div&gt;温格&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>这种方法的原理是让容器层和内层都相对自己移动,容器层移动自身宽度的50%,内层相对于移动自身宽度的-50%。这样一来外部容器正好可以将内容垂直的包裹住,并且由于外部容器是浮动的,所以容器的宽度和内层的宽度一致,这样可以做到完全自适应的实现居中。该方法适用于竖向排版的情况。</p>
+<h2 id="2-IE9-以上的浏览器-垂直居中"><a href="#2-IE9-以上的浏览器-垂直居中" class="headerlink" title="2.IE9+以上的浏览器,垂直居中"></a>2.IE9+以上的浏览器,垂直居中</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">50px</span>;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">0</span>;</span><br><span class="line">    <span class="attribute">right</span>:<span class="number">0</span>;</span><br><span class="line">    <span class="attribute">bottom</span>:<span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>:<span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin</span>:auto;</span><br><span class="line">    <span class="attribute">background</span>:<span class="number">#f60</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>这个方法原理不太清楚,我是这样理解的,当这个div哪里也去不了,然后margin还是auto的时候,他就只能相对于外部容器垂直居中了..</p>
+<h2 id="3-IE8及以下的垂直居中"><a href="#3-IE8及以下的垂直居中" class="headerlink" title="3.IE8及以下的垂直居中"></a>3.IE8及以下的垂直居中</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">   <span class="selector-class">.parent</span>&#123;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">500px</span>;</span><br><span class="line">	<span class="attribute">width</span>:<span class="number">500px</span>;</span><br><span class="line">	<span class="attribute">font-size</span>:<span class="number">438.6px</span>;<span class="comment">/*(font-size:width/114)*/</span></span><br><span class="line">	<span class="attribute">background-color</span>:paleturquoise;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span>&#123;</span><br><span class="line">	<span class="attribute">background-color</span>:deepskyblue;</span><br><span class="line">	<span class="attribute">vertical-align</span>:middle;</span><br><span class="line">	<span class="attribute">zoom</span>:<span class="number">1</span>;</span><br><span class="line">	<span class="attribute">display</span>:inline;</span><br><span class="line">	<span class="attribute">width</span>:<span class="number">50px</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">50px</span>;</span><br><span class="line">	<span class="attribute">font</span>:<span class="number">18px</span>/<span class="number">18px</span> <span class="string">"微软雅黑"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*.child一定要写上font属性,这个方法在ie中才会实现.*/</span></span><br><span class="line"></span><br><span class="line">   &lt;div class="parent"&gt;</span><br><span class="line">	&lt;div class="child"&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>这个方法只有IE8及以下才可以实现,至今也没明白父级的font-size属性为什么一定要等于宽度/114,IE真是一个奇葩的存在…在虚拟机下测试这个方法确实有效,子级一定要写font-size属性,即使没有内容也要写,否则无效。针对IE8以下的兼容性时,这个方法可以作为一种hack使用。</p>
+<h2 id="4-除IE和Safari之外的标准浏览器"><a href="#4-除IE和Safari之外的标准浏览器" class="headerlink" title="4.除IE和Safari之外的标准浏览器"></a>4.除IE和Safari之外的标准浏览器</h2><p>IE是指9及以下,我只测试了这些版本的IE,另外Safari也是不支持的。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">600px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">600px</span>;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid palegreen;</span><br><span class="line">    <span class="attribute">position</span>:relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.item</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid palegreen;</span><br><span class="line">    <span class="attribute">position</span>:absolute;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>:<span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">transform</span>:<span class="built_in">translate</span>(-50%,-50%);         </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class="box"&gt;</span><br><span class="line">    &lt;div class="item"&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>容器和内层都已经脱离了文档流,内层先移动自身的50%,再通过transform属性移动自身的-50%,修正后的top、left就正好处于容器内的垂直居中位置了。</p>
+<h2 id="5-flex方法"><a href="#5-flex方法" class="headerlink" title="5.flex方法"></a>5.flex方法</h2><p>IE依然不支持CSS3是必须的,遗憾的是Safari依然是不支持的,至少在我测试阶段(5.1.7)window下还没有支持。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">   <span class="selector-id">#box</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>:<span class="number">800px</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">800px</span>;</span><br><span class="line">	<span class="attribute">display</span>:flex;</span><br><span class="line">	<span class="attribute">border</span>:<span class="number">1px</span> solid palevioletred;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#box</span> <span class="selector-tag">div</span>&#123;</span><br><span class="line">	<span class="attribute">width</span>:<span class="number">200px</span>;</span><br><span class="line">	<span class="attribute">height</span>:<span class="number">200px</span>;</span><br><span class="line">	<span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#2189BF</span>;</span><br><span class="line">	<span class="attribute">flex-direction</span>:row;</span><br><span class="line">	<span class="attribute">justify-content</span>:center;</span><br><span class="line">	<span class="attribute">align-self</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">   &lt;div id="box"&gt;</span><br><span class="line">	&lt;div&gt;&lt;/div&gt;</span><br><span class="line">	&lt;div&gt;&lt;/div&gt;</span><br><span class="line">	&lt;div&gt;&lt;/div&gt;</span><br><span class="line">	&lt;div&gt;&lt;/div&gt;</span><br><span class="line">	&lt;div&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>flex针对垂直居中的方法比较直接,justify-content:center; align-self: center;这两个属性直接设置为center就可以了,在不支持CSS3的浏览器中是无法实现的,这也是flex的暂时的缺点之一。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTML、CSS/" rel="tag"># HTML、CSS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/29/图片的异步加载与onload函数/" rel="next" title="图片的异步加载与onload函数">
+                <i class="fa fa-chevron-left"></i> 图片的异步加载与onload函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/02/模块化简略说明/" rel="prev" title="模块化简略说明">
+                模块化简略说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Zoe" />
+            
+              <p class="site-author-name" itemprop="name">Zoe</p>
+              <p class="site-description motion-element" itemprop="description">心之所向，素履以往。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-标准浏览器全兼容-内容水平居中"><span class="nav-number">1.</span> <span class="nav-text">1.标准浏览器全兼容,内容水平居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-IE9-以上的浏览器-垂直居中"><span class="nav-number">2.</span> <span class="nav-text">2.IE9+以上的浏览器,垂直居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-IE8及以下的垂直居中"><span class="nav-number">3.</span> <span class="nav-text">3.IE8及以下的垂直居中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-除IE和Safari之外的标准浏览器"><span class="nav-number">4.</span> <span class="nav-text">4.除IE和Safari之外的标准浏览器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-flex方法"><span class="nav-number">5.</span> <span class="nav-text">5.flex方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zoe</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

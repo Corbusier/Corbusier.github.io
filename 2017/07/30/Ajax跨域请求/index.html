@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/icon.ico?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1https://mail.google.com/mail/#inbox">
+<meta name="keywords" content="跨域请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ajax跨域请求">
+<meta property="og:url" content="https://corbusier.github.io/2017/07/30/Ajax跨域请求/index.html">
+<meta property="og:site_name" content="Awesome_929">
+<meta property="og:description" content="1https://mail.google.com/mail/#inbox">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://corbusier.github.io/images/domain.jpg">
+<meta property="og:updated_time" content="2017-07-30T15:45:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ajax跨域请求">
+<meta name="twitter:description" content="1https://mail.google.com/mail/#inbox">
+<meta name="twitter:image" content="https://corbusier.github.io/images/domain.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://corbusier.github.io/2017/07/30/Ajax跨域请求/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Ajax跨域请求 | Awesome_929</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Awesome_929</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-about"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://corbusier.github.io/2017/07/30/Ajax跨域请求/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zoe">
+      <meta itemprop="description" content="心之所向，素履以往。">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Awesome_929">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Ajax跨域请求
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-07-30 23:45:18" itemprop="dateCreated datePublished" datetime="2017-07-30T23:45:18+08:00">2017-07-30</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Basic-JS/" itemprop="url" rel="index"><span itemprop="name">Basic_JS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/images/domain.jpg" alt="domain" align="center" width="640px" height="280px"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//mail.google.com/mail/#inbox</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>   
+<p>以上URL的构成：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http:					协议名，也就是HTTP超文本传输协议</span><br><span class="line">mail					服务器名</span><br><span class="line">google.com			域名</span><br><span class="line">mail.google.com	网站名</span><br><span class="line">／						根目录</span><br><span class="line"><span class="string">`#inbox`</span>				根目录下的默认网页</span><br></pre></td></tr></table></figure></p>
+<h2 id="1-什么是跨域请求？"><a href="#1-什么是跨域请求？" class="headerlink" title="1. 什么是跨域请求？"></a>1. 什么是跨域请求？</h2><p>请求的资源所在的<code>协议/域名/端口号</code>三者之一与当前资源不一致即为跨域请求。</p>
+<p>关于Ajax环境的搭建先略过，直接来一段demo看：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head lang=<span class="string">"en"</span>&gt;</span><br><span class="line">        &lt;meta charset=<span class="string">"UTF-8"</span>&gt;</span><br><span class="line">        &lt;title&gt;&lt;/title&gt;</span><br><span class="line">    &lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">    &lt;body&gt;</span></span><br><span class="line"><span class="regexp">        &lt;h2&gt;非跨域请求&lt;/</span>h2&gt;</span><br><span class="line">        &lt;button id=<span class="string">"btn1"</span>&gt;非跨域按钮&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">        &lt;h2&gt;跨域请求&lt;/</span>h2&gt;</span><br><span class="line">        &lt;button id=<span class="string">"btn2"</span>&gt;跨域按钮&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">    &lt;script src="https:/</span><span class="regexp">/cdn.bootcss.com/</span>jquery/<span class="number">3.2</span><span class="number">.1</span>/jquery.js<span class="string">"&gt;&lt;/script&gt;</span></span><br><span class="line"><span class="string">    &lt;script&gt;</span></span><br><span class="line"><span class="string">        $('#btn1').click(function(obj)&#123;</span></span><br><span class="line"><span class="string">            $.get('http://localhost:8081/Ajax/2.php',function()&#123;</span></span><br><span class="line"><span class="string">                console.log('btn1被单击后发起的XHR请求');</span></span><br><span class="line"><span class="string">                console.log(obj);</span></span><br><span class="line"><span class="string">            &#125;)</span></span><br><span class="line"><span class="string">        &#125;)</span></span><br><span class="line"><span class="string">     </span></span><br><span class="line"><span class="string">        $('#btn2').click(function(obj)&#123;</span></span><br><span class="line"><span class="string">            $.get('https://unsplash.com',function()&#123;</span></span><br><span class="line"><span class="string">                console.log('btn2被单击后发起的XHR请求');</span></span><br><span class="line"><span class="string">                console.log(obj);</span></span><br><span class="line"><span class="string">            &#125;)</span></span><br><span class="line"><span class="string">        &#125;)    </span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">    &lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>PHP代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(<span class="string">'Content-Type: application/json; charset=utf8'</span>);</span><br><span class="line">$data = [<span class="string">'uname'</span>=&gt;<span class="string">'Tom'</span>,<span class="string">'age'</span>=&gt;<span class="number">20</span>];</span><br><span class="line">echo json_encode($data);</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器地址栏输入<code>http://localhost:8081/Ajax/cross.html</code>打开页面。<br>点击’非跨域按钮’，查看控制台发现，请求是成功的，并且可以看见事件对象。</p>
+<p>点击’跨域按钮’，查看控制台，发现XHR请求失败了，因为请求的域名不同。</p>
+<h2 id="2-浏览器允许跨域请求吗？"><a href="#2-浏览器允许跨域请求吗？" class="headerlink" title="2. 浏览器允许跨域请求吗？"></a>2. 浏览器允许跨域请求吗？</h2><p>允许：<code>&lt; img src=&quot;跨域的图片&quot;&gt;</code><br>允许：<code>&lt;link rel=&quot;stylesheet&quot; href=&quot;跨域的CSS&quot;&gt;</code><br>允许：<code>&lt;a href=&quot;跨域的链接&quot;&gt;</code><br>允许：<code>&lt;script src=&quot;跨域的JS&quot;&gt;</code><br>禁止：<code>AJAX请求不允许跨域</code></p>
+<p>处于安全原因的考虑，所有的浏览器默认禁止使用XHR异步的跨域请求。</p>
+<p>比如img图片跨域：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt; img src=<span class="string">"https://images.unsplash.com/photo-1425342605259-25d80e320565?dpr=2&amp;auto=format&amp;fit=crop&amp;w=1080&amp;h=720&amp;q=80&amp;cs=tinysrgb&amp;crop="</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>不同协议名、不同域名，网页正常显示图片，说明允许跨域。</p>
+<p>图像跨域主要有两个缺点：1.只能发送get请求。2.无法访问服务器的响应文本所以，图像跨域只能用于浏览器与服务器间的单项通信。    </p>
+<p>##3. 跨域解决方案</p>
+<h3 id="1-设置”Access-Control-Allow-Origin”头部"><a href="#1-设置”Access-Control-Allow-Origin”头部" class="headerlink" title="1. 设置”Access-Control-Allow-Origin”头部"></a>1. 设置”Access-Control-Allow-Origin”头部</h3><p>在PHP页面中设置<code>Access-Control-Allow-Origin</code>头部信息</p>
+<p>PHP代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">header(<span class="string">'Content-Type: application/json; charset=utf8'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定允许其他域名访问  </span></span><br><span class="line">header(<span class="string">'Access-Control-Allow-Origin:*'</span>);  </span><br><span class="line">$data = [<span class="string">'uname'</span>=&gt;<span class="string">'Tom'</span>,<span class="string">'age'</span>=&gt;<span class="number">20</span>];</span><br><span class="line">echo json_encode($data);</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器<code>http://localhost:8081/Ajax/cross.html</code>页面中发现，跨域请求是成功的。</p>
+<h3 id="2-使用JSONP"><a href="#2-使用JSONP" class="headerlink" title="2. 使用JSONP"></a>2. 使用JSONP</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;button id=<span class="string">"crossBtn"</span>&gt;跨域按钮&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">   function doResponse(obj)&#123;</span></span><br><span class="line"><span class="regexp">       alert(obj.uname+obj.age);</span></span><br><span class="line"><span class="regexp">   &#125;</span></span><br><span class="line"><span class="regexp">     </span></span><br><span class="line"><span class="regexp">   $('#crossBtn').click(function()&#123;</span></span><br><span class="line"><span class="regexp">       $.ajax(&#123;</span></span><br><span class="line"><span class="regexp">           url:'http:/</span><span class="regexp">/127.0.0.1:8081/</span>Ajax/<span class="number">3.</span>php<span class="string">',</span></span><br><span class="line"><span class="string">           success:doResponse</span></span><br><span class="line"><span class="string">       &#125;)</span></span><br><span class="line"><span class="string">   &#125;)   </span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>PHP代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">'Content-Type: application/json'</span>);</span><br><span class="line"></span><br><span class="line">$data = [<span class="string">'uname'</span>=&gt;<span class="string">'Tom'</span>,<span class="string">'age'</span>=&gt;<span class="number">20</span>];</span><br><span class="line"></span><br><span class="line">$json =  json_encode($data);  <span class="comment">//返回一个json&#123;"":"","":20&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">'doResponse('</span>.$json.<span class="string">')'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>在$.ajax 方法中有一个 dataType属性，如果将该属性设置成 dataType:”jsonp”，就能实现跨域<br>将$请求稍作修改：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#crossBtn'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       $.ajax(&#123;</span><br><span class="line">           url:<span class="string">'http://127.0.0.1:8081/Ajax/3.php'</span>,</span><br><span class="line">           dataType:<span class="string">'jsonp'</span>,</span><br><span class="line">           success:doResponse</span><br><span class="line">       &#125;)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>再次打开页面查看，就可以获取到PHP文件中数据了。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/跨域请求/" rel="tag"># 跨域请求</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/21/数组方法及应用/" rel="next" title="数组方法及应用">
+                <i class="fa fa-chevron-left"></i> 数组方法及应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/06/ES6 Module/" rel="prev" title="ES6 Module">
+                ES6 Module <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Zoe" />
+            
+              <p class="site-author-name" itemprop="name">Zoe</p>
+              <p class="site-description motion-element" itemprop="description">心之所向，素履以往。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是跨域请求？"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是跨域请求？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-浏览器允许跨域请求吗？"><span class="nav-number">2.</span> <span class="nav-text">2. 浏览器允许跨域请求吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-设置”Access-Control-Allow-Origin”头部"><span class="nav-number">2.1.</span> <span class="nav-text">1. 设置”Access-Control-Allow-Origin”头部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用JSONP"><span class="nav-number">2.2.</span> <span class="nav-text">2. 使用JSONP</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zoe</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
