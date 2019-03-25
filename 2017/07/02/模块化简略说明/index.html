@@ -402,7 +402,7 @@
 <li>可复用性<br>现实来讲，在日常工作中我们经常会复制自己之前写过的代码到新项目中。</li>
 </ol>
 <p>JavaScript作为一门动态语言，无法做到在一个JS文件中使用import这样的语法引用别的JS文件，正确的姿势是直接在其中调用别的JS下的方法来使用。能否调用成功，完全取决于有没有正确的引用其他的JS文件，这显然不利于代码的维护，于是就有了初代的模块化概念。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"index.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">    &lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"math.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">  &lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">  &lt;body&gt;</span></span><br><span class="line"><span class="regexp">    &lt;p id="hello"&gt; Hello Wrold &lt;/</span>p&gt;</span><br><span class="line">    &lt;input type=<span class="string">"button"</span> onclick=<span class="string">"onPress()"</span> value=<span class="string">"Click me"</span> /&gt;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// index.js</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onPress</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">'hello'</span>);</span><br><span class="line">        p.innerHTML = add(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// math.js</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"index.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"math.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">  &lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">  &lt;body&gt;</span></span><br><span class="line"><span class="regexp">    &lt;p id="hello"&gt; Hello Wrold &lt;/</span>p&gt;</span><br><span class="line">    &lt;input type=<span class="string">"button"</span> onclick=<span class="string">"onPress()"</span> value=<span class="string">"Click me"</span> /&gt;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// index.js</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">onPress</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> p = <span class="built_in">document</span>.getElementById(<span class="string">'hello'</span>);</span><br><span class="line">        p.innerHTML = add(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// math.js</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">  &lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="初代模块化的形成过程"><a href="#初代模块化的形成过程" class="headerlink" title="初代模块化的形成过程"></a>初代模块化的形成过程</h2><blockquote>
 <p>上面的问题在于index.js无法对add方法的来源作区分，缺乏命名空间的概念</p>
 </blockquote>
@@ -556,7 +556,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">45</span>
+                    <span class="site-state-item-count">46</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -704,7 +704,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -774,7 +778,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
